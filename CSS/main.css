@@ -1,0 +1,107 @@
+:root {
+  --rubik-white-color: rgb(255 255 255 / 1);
+  --rubik-yellow-color: rgb(255 255 0 / 1);
+  --rubik-red-color: rgb(255 0 0 / 1);
+  --rubik-orange-color: rgb(255 165 0 / 1);
+  --rubik-green-color: rgb(255 128 0 / 1);
+  --rubik-blue-color: rgb(0 0 255 / 1);
+  --rubik-gray-color: rgb(20 20 20 / 1);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  background-color: rgb(18 18 18 / 1);
+  font-family: monospace;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(40 40 40 / 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(18 18 18 / 0.5);
+}
+
+h1, h1 + p {
+  text-align: center;
+  margin: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+.container {
+  width: 100%;
+}
+
+main {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 1rem;
+}
+
+section {
+  width: 90%;
+}
+
+section a {
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  row-gap: 1rem;
+  text-decoration: none;
+}
+
+section a .img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0 0 0 / 1);
+}
+
+section a .img svg {
+  width: 10rem;
+  height: 10rem;
+}
+
+section a .img svg g {
+  opacity: 1;
+  stroke-width: 0;
+  stroke-opacity: 0.5;
+  stroke-linejoin: round;
+}
+
+section a .description {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr;
+}
+
+section a .description, 
+section a .description h1, 
+section a .description p {
+  background-color: rgba(0 0 0 / 1);
+}
+
+section a .description h1, 
+section a .description p {
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 1200px) {
+  main {
+    row-gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+}
