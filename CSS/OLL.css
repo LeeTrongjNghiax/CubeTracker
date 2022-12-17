@@ -1,4 +1,4 @@
 main section .num::before {
   counter-increment: no;
-  content: "F2L " counter(no);
+  content: "OLL " counter(no);
 }

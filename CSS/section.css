@@ -1,0 +1,215 @@
+:root {
+  --rubik-white-color: rgb(255 255 255 / 1);
+  --rubik-yellow-color: rgb(255 255 0 / 1);
+  --rubik-red-color: rgb(255 0 0 / 1);
+  --rubik-orange-color: rgb(255 165 0 / 1);
+  --rubik-green-color: rgb(0 255 0 / 1);
+  --rubik-blue-color: rgb(0 0 255 / 1);
+  --rubik-gray-color: rgb(20 20 20 / 1);
+
+  --text-selection-color: rgb(0 0 0 / 1);
+  --text-selection-background-color: rgb(255 255 255 / 1);
+
+  --web-background-color: rgb(18 18 18 / 0.5);
+  --primary-background-color: rgb(0 0 0 / 0.5);
+  --text-color: rgb(255 255 255 / 1);
+}
+
+::selection {
+  color: var(--text-selection-color);
+  background-color: var(--text-selection-background-color);
+}
+
+* {
+  background-color: var(--web-background-color);
+  color: var(--text-color);
+  font-family: monospace;
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(18 18 18 / 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(90 90 90 / 0.5);
+  border-radius: 0.5rem;
+  border: 0.125rem solid rgb(255 255 255 / 0.5);
+}
+
+h1 {
+  font-size: 3rem;
+  text-align: center;
+  margin: 1rem;
+}
+
+.container {
+  width: 100%;
+  counter-reset: no;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+main section {
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  grid-template-rows: min-content min-content;
+  grid-template-areas: "num num" "img alg";
+  gap: 1rem;
+}
+
+main section .num {
+  grid-area: num;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-background-color);
+  padding: 0.5rem;
+  box-shadow: 
+    0 0 0 0.25rem rgb(0 0 0 / 1), 
+    0 0 0 0.5rem rgb(20 20 20 / 1), 
+    0 0 0 0.75rem rgb(30 30 30 / 1), 
+    0 0 0 1rem rgb(40 40 40 / 1);
+  /* border: 1px solid red; */
+}
+
+main section .img {
+  grid-area: img;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-background-color);
+}
+
+main section .img svg {
+  width: 10rem;
+  height: 10rem;
+}
+
+main section .img svg g {
+  opacity: 1;
+  stroke-width: 0;
+  stroke-opacity: 0.5;
+  stroke-linejoin: round;
+}
+
+main section .algorithms {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-area: alg;
+  align-items: center;
+  justify-items: center;
+  background-color: var(--primary-background-color);
+  counter-reset: lmao;
+}
+
+main section .algorithms .algorithm-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 26fr 3fr 3fr 8fr;
+  column-gap: 0.5rem;
+  align-items: center;
+  justify-items: center;
+  background-color: rgb(0 0 0 / 0.5);
+}
+
+main section .algorithms .algorithm-row:first-child {
+  padding: 1rem 0 0.5rem 0;
+  background-color: rgb(0 0 0 / 1);
+  /* border: 1px solid red; */
+}
+
+main section .algorithms .algorithm-row .vote {
+  background-color: rgb(0 0 0 / 1)
+}
+
+main section .algorithms .algorithm-row .gen {
+  background-color: rgb(0 0 0 / 1)
+}
+
+main section .algorithms .algorithm-row .algorithm {
+  background-color: rgb(0 0 0 / 1)
+}
+
+main section .algorithms .algorithm-row .algorithm::before {
+  counter-increment: lmao;
+  content: counter(lmao) ". ";
+}
+
+main section .algorithms .algorithm-row .algorithm {
+  background-color: rgb(0 0 0 / 1)
+}
+
+main section .algorithms .algorithm-row .state, 
+main section .algorithms .algorithm-row button {
+
+}
+
+main section .algorithms .algorithm-row button {
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+main section .algorithms .algorithm-row button[data-state]::before {
+  content: attr(data-state);
+}
+
+main section .algorithms .algorithm-row button[data-state="Not Learned"] {
+  background-color: rgba(0 0 0 / 0.5);
+}
+
+main section .algorithms .algorithm-row button[data-state="Learning"] {
+  background-color: rgba(200 200 0 / 0.5);
+}
+
+main section .algorithms .algorithm-row button[data-state="Learned"] {
+  background-color: rgba(0 200 0 / 0.5);
+}
+
+.square {
+  stroke-width: 2.5%; 
+  stroke: black;
+}
+.line {
+  stroke-width: 2%; 
+}
+.rect {
+  stroke-width: 1.5%; 
+  stroke: black;
+}
+
+@media (width <= 700px) {
+  main section {
+    grid-template-columns: 1fr;
+    grid-template-areas: "num" "img" "alg";
+  }
+  
+  main section .num {
+    grid-area: num;
+  }
+  
+  main section .img {
+    grid-area: img;
+  }
+
+  main section .algorithms {
+    grid-area: alg;
+  }
+}
+
+@media (width <= 1550px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
