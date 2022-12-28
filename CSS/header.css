@@ -34,3 +34,9 @@ header nav ul li a {
 header nav ul li a:hover {
   background-color: var(--primary-color);
 }
+
+@media (width <= 1550px) {
+  header nav ul li a {
+    font-size: 0.75rem;
+  }
+}

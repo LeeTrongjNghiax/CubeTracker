@@ -23,3 +23,9 @@ footer nav ul li a {
   padding: 1rem;
   background-color: var(--footer-background-color);
 }
+
+@media (width <= 1550px) {
+  footer nav ul li a {
+    font-size: 0.75rem;
+  }
+}

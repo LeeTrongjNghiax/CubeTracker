@@ -23,11 +23,16 @@ h1 {
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+}
+
+article {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
-main section {
+section {
   margin: 1rem;
   display: grid;
   grid-template-columns: 1fr 10fr;
@@ -36,22 +41,16 @@ main section {
   gap: 1rem;
 }
 
-main section .num {
+section .num {
   grid-area: num;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--index-background-color);
   padding: 0.5rem;
-  /* box-shadow: 
-    0 0 0 0.25rem rgb(0 0 0 / 1), 
-    0 0 0 0.5rem rgb(20 20 20 / 1), 
-    0 0 0 0.75rem rgb(30 30 30 / 1), 
-    0 0 0 1rem rgb(40 40 40 / 1); */
-  /* border: 1px solid red; */
 }
 
-main section .img {
+section .img {
   grid-area: img;
   display: flex;
   align-items: center;
@@ -59,20 +58,20 @@ main section .img {
   background-color: var(--algorithm-background-color);
 }
 
-main section .img svg {
+section .img svg {
   width: 10rem;
   height: 10rem;
   background-color: var(--background-color);
 }
 
-main section .img svg g {
+section .img svg g {
   opacity: 1;
   stroke-width: 0;
   stroke-opacity: 0.5;
   stroke-linejoin: round;
 }
 
-main section .algorithms {
+section .algorithms {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -83,7 +82,7 @@ main section .algorithms {
   counter-reset: lmao;
 }
 
-main section .algorithms .algorithm-row {
+section .algorithms .algorithm-row {
   width: 100%;
   display: grid;
   grid-template-columns: 26fr 3fr 3fr 8fr;
@@ -93,7 +92,7 @@ main section .algorithms .algorithm-row {
   background-color: var(--algorithm-background-color);
 }
 
-main section .algorithms .loadMore {
+section .algorithms .loadMore {
   width: 90%;
   text-align: center;
   background-color: var(--algorithm-background-color);
@@ -102,75 +101,62 @@ main section .algorithms .loadMore {
   transition: background-color 0.25s;
 }
 
-main section .algorithms .loadMore:hover {
+section .algorithms .loadMore:hover {
   background-color: var(--primary-color);
 }
 
-main section .algorithms .algorithm-row:first-child {
+section .algorithms .algorithm-row:first-child {
   padding: 1rem 0 0.5rem 0;
   background-color: var(--algorithm-background-color);
-  /* border: 1px solid red; */
 }
 
-main section .algorithms .algorithm-row .algorithm::before {
+section .algorithms .algorithm-row .algorithm::before {
   counter-increment: lmao;
   content: counter(lmao) ". ";
 }
 
-main section .algorithms .algorithm-row p {
+section .algorithms .algorithm-row p {
   background-color: var(--algorithm-background-color);
 }
 
-main section .algorithms .algorithm-row .vote {
+section .algorithms .algorithm-row .vote {
   background-color: var(--algorithm-background-color);
 }
 
-main section .algorithms .algorithm-row .gen {
+section .algorithms .algorithm-row .gen {
   background-color: var(--algorithm-background-color);
 }
 
-main section .algorithms .algorithm-row button {
+section .algorithms .algorithm-row button {
   padding: 0.5rem;
   margin: 0.5rem;
 }
 
-main section .algorithms .algorithm-row button[data-state]::before {
+section .algorithms .algorithm-row button[data-state]::before {
   content: attr(data-state);
 }
 
-main section .algorithms .algorithm-row button[data-state="Not Learned"] {
+section .algorithms .algorithm-row button[data-state="Not Learned"] {
   background-color: var(--button-state-notlearn);
 }
 
-main section .algorithms .algorithm-row button[data-state="Learning"] {
+section .algorithms .algorithm-row button[data-state="Learning"] {
   background-color: var(--button-state-learning);
 }
 
-main section .algorithms .algorithm-row button[data-state="Learned"] {
+section .algorithms .algorithm-row button[data-state="Learned"] {
   background-color: var(--button-state-learned);
 }
 
 @media (width <= 700px) {
-  main section {
+  section {
     grid-template-columns: 1fr;
     grid-template-areas: "num" "img" "alg";
-  }
-  
-  main section .num {
-    grid-area: num;
-  }
-  
-  main section .img {
-    grid-area: img;
-  }
-
-  main section .algorithms {
-    grid-area: alg;
   }
 }
 
 @media (width <= 1550px) {
-  main {
+  article {
     grid-template-columns: 1fr;
   }
 }
