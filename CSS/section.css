@@ -1,57 +1,25 @@
-:root {
-  --rubik-white-color: rgb(255 255 255 / 1);
-  --rubik-yellow-color: rgb(255 255 0 / 1);
-  --rubik-red-color: rgb(255 0 0 / 1);
-  --rubik-orange-color: rgb(255 165 0 / 1);
-  --rubik-green-color: rgb(0 255 0 / 1);
-  --rubik-blue-color: rgb(0 0 255 / 1);
-  --rubik-gray-color: rgb(20 20 20 / 1);
-
-  --text-selection-color: rgb(0 0 0 / 1);
-  --text-selection-background-color: rgb(255 255 255 / 1);
-
-  --web-background-color: rgb(18 18 18 / 0.5);
-  --primary-background-color: rgb(0 0 0 / 0.5);
-  --text-color: rgb(255 255 255 / 1);
-}
-
 ::selection {
   color: var(--text-selection-color);
   background-color: var(--text-selection-background-color);
 }
 
 * {
-  background-color: var(--web-background-color);
+  background-color: var(--background-color);
   color: var(--text-color);
   font-family: monospace;
-  font-size: 20px;
+  font-size: 10px;
   padding: 0;
   margin: 0;
 }
 
-::-webkit-scrollbar {
-  width: 1rem;
-}
-
-::-webkit-scrollbar-track {
-  background-color: rgb(18 18 18 / 0.5);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(90 90 90 / 0.5);
-  border-radius: 0.5rem;
-  border: 0.125rem solid rgb(255 255 255 / 0.5);
+body {
+  overflow-x: hidden;
 }
 
 h1 {
   font-size: 3rem;
   text-align: center;
   margin: 1rem;
-}
-
-.container {
-  width: 100%;
-  counter-reset: no;
 }
 
 main {
@@ -73,13 +41,13 @@ main section .num {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary-background-color);
+  background-color: var(--index-background-color);
   padding: 0.5rem;
-  box-shadow: 
+  /* box-shadow: 
     0 0 0 0.25rem rgb(0 0 0 / 1), 
     0 0 0 0.5rem rgb(20 20 20 / 1), 
     0 0 0 0.75rem rgb(30 30 30 / 1), 
-    0 0 0 1rem rgb(40 40 40 / 1);
+    0 0 0 1rem rgb(40 40 40 / 1); */
   /* border: 1px solid red; */
 }
 
@@ -88,12 +56,13 @@ main section .img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary-background-color);
+  background-color: var(--algorithm-background-color);
 }
 
 main section .img svg {
   width: 10rem;
   height: 10rem;
+  background-color: var(--background-color);
 }
 
 main section .img svg g {
@@ -110,7 +79,7 @@ main section .algorithms {
   grid-area: alg;
   align-items: center;
   justify-items: center;
-  background-color: var(--primary-background-color);
+  background-color: var(--algorithm-background-color);
   counter-reset: lmao;
 }
 
@@ -121,25 +90,26 @@ main section .algorithms .algorithm-row {
   column-gap: 0.5rem;
   align-items: center;
   justify-items: center;
-  background-color: rgb(0 0 0 / 0.5);
+  background-color: var(--algorithm-background-color);
+}
+
+main section .algorithms .loadMore {
+  width: 90%;
+  text-align: center;
+  background-color: var(--algorithm-background-color);
+  padding: 0.5rem;
+  margin: 1rem;
+  transition: background-color 0.25s;
+}
+
+main section .algorithms .loadMore:hover {
+  background-color: var(--primary-color);
 }
 
 main section .algorithms .algorithm-row:first-child {
   padding: 1rem 0 0.5rem 0;
-  background-color: rgb(0 0 0 / 1);
+  background-color: var(--algorithm-background-color);
   /* border: 1px solid red; */
-}
-
-main section .algorithms .algorithm-row .vote {
-  background-color: rgb(0 0 0 / 1)
-}
-
-main section .algorithms .algorithm-row .gen {
-  background-color: rgb(0 0 0 / 1)
-}
-
-main section .algorithms .algorithm-row .algorithm {
-  background-color: rgb(0 0 0 / 1)
 }
 
 main section .algorithms .algorithm-row .algorithm::before {
@@ -147,13 +117,16 @@ main section .algorithms .algorithm-row .algorithm::before {
   content: counter(lmao) ". ";
 }
 
-main section .algorithms .algorithm-row .algorithm {
-  background-color: rgb(0 0 0 / 1)
+main section .algorithms .algorithm-row p {
+  background-color: var(--algorithm-background-color);
 }
 
-main section .algorithms .algorithm-row .state, 
-main section .algorithms .algorithm-row button {
+main section .algorithms .algorithm-row .vote {
+  background-color: var(--algorithm-background-color);
+}
 
+main section .algorithms .algorithm-row .gen {
+  background-color: var(--algorithm-background-color);
 }
 
 main section .algorithms .algorithm-row button {
@@ -166,27 +139,15 @@ main section .algorithms .algorithm-row button[data-state]::before {
 }
 
 main section .algorithms .algorithm-row button[data-state="Not Learned"] {
-  background-color: rgba(0 0 0 / 0.5);
+  background-color: var(--button-state-notlearn);
 }
 
 main section .algorithms .algorithm-row button[data-state="Learning"] {
-  background-color: rgba(200 200 0 / 0.5);
+  background-color: var(--button-state-learning);
 }
 
 main section .algorithms .algorithm-row button[data-state="Learned"] {
-  background-color: rgba(0 200 0 / 0.5);
-}
-
-.square {
-  stroke-width: 2.5%; 
-  stroke: black;
-}
-.line {
-  stroke-width: 2%; 
-}
-.rect {
-  stroke-width: 1.5%; 
-  stroke: black;
+  background-color: var(--button-state-learned);
 }
 
 @media (width <= 700px) {

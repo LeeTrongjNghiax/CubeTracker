@@ -1,16 +1,3 @@
-:root {
-  --rubik-white-color: rgb(255 255 255 / 1);
-  --rubik-yellow-color: rgb(255 255 0 / 1);
-  --rubik-red-color: rgb(255 0 0 / 1);
-  --rubik-orange-color: rgb(255 165 0 / 1);
-  --rubik-green-color: rgb(255 128 0 / 1);
-  --rubik-blue-color: rgb(0 0 255 / 1);
-  --rubik-gray-color: rgb(20 20 20 / 1);
-
-  --text-selection-color: rgb(0 0 0 / 1);
-  --text-selection-background-color: rgb(255 255 255 / 1);
-}
-
 ::selection {
   color: var(--text-selection-color);
   background-color: var(--text-selection-background-color);
@@ -20,64 +7,13 @@
   padding: 0;
   margin: 0;
   font-size: 20px;
-  background-color: rgb(18 18 18 / 1);
+  background-color: var(--background-color);
   font-family: monospace;
   color: white;
 }
 
-::-webkit-scrollbar {
-  width: 1rem;
-}
-
-::-webkit-scrollbar-track {
-  background-color: rgb(18 18 18 / 0.5);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(90 90 90 / 0.5);
-  border-radius: 0.5rem;
-  border: 0.125rem solid rgb(255 255 255 / 0.5);
-}
-
 body {
   overflow-x: hidden;
-}
-
-header {
-  width: 100%;
-}
-
-header nav {
-  width: 100%;
-}
-
-header nav ul {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  list-style-type: none;
-  background-color: rgb(30 30 30 / 1);
-}
-
-header nav ul li {
-  margin: 1rem 0 1rem 0;
-}
-
-header nav ul li:first-child {
-  margin-right: auto;
-}
-
-header nav ul li a {
-  padding: 1rem;
-  text-decoration: none;
-  font-size: 1.5rem;
-  background-color: rgb(30 30 30 / 1);
-  transition: background-color 0.5s;
-}
-
-header nav ul li a:hover {
-  background-color: rgb(20 200 20 / 1);
 }
 
 main {
@@ -120,7 +56,6 @@ section a .img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0 0 0 / 1);
 }
 
 section a .img svg {
@@ -141,40 +76,12 @@ section a .description {
   align-items: center;
   justify-content: space-around;
   grid-template-columns: 1fr;
-  background-color: rgba(0 0 0 / 1);
+  background-color: var(--algorithm-background-color);
 }
 
 section a .description h1, 
 section a .description p {
-  background-color: rgba(0 0 0 / 1);
-}
-
-footer {
-  /* position: fixed;
-  bottom: 0; */
-  width: 100%;
-}
-
-footer nav {
-  width: 100%;
-}
-
-footer nav ul {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  list-style-type: none;
-  background-color: rgb(0 0 0 / 1);
-}
-
-footer nav ul li {
-  margin: 1rem 0 1rem 0;
-}
-
-footer nav ul li a {
-  padding: 1rem;
-  background-color: rgb(0 0 0 / 1);
+  background-color: var(--algorithm-background-color);
 }
 
 @media (max-width: 1200px) {
