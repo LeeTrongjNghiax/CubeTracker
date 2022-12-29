@@ -18,15 +18,10 @@
   <title>F2L</title>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="/">CUBE TRACKER</a></li>
-        <li><a href="">SIGN UP</a></li>
-        <li><a href="">SETTNG</a></li>
-      </ul>
-    </nav>
-  </header>
+  
+  <?php include '../connect.php' ?>
+  <?php include 'DynamicPage/header.php' ?>
+
   <main>
     <h1>F2L Algorithms</h1>
     <article>
@@ -371,14 +366,9 @@
       </section>
     </article>
   </main>
-  <footer>
-    <nav>
-      <ul>
-        <li><a href="">ABOUT</a></li>
-        <li><a href="">CONTACT US</a></li>
-      </ul>
-    </nav>
-  </footer>
+  
+  <?php include 'DynamicPage/footer.php' ?>
+
 </body>
 
 </html>

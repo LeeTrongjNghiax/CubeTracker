@@ -15,15 +15,10 @@
   <title>Cube Tracker</title>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="/">CUBE TRACKER</a></li>
-        <li><a href="">SIGN UP</a></li>
-        <li><a href="">SETTNG</a></li>
-      </ul>
-    </nav>
-  </header>
+
+  <?php include 'connect.php' ?>
+  <?php include 'WebPage/DynamicPage/header.php' ?>
+  
   <main>
     <div class="description">
       <h1>Welcome to The Cube Tracker!</h1>
@@ -31,7 +26,7 @@
     </div>
     <article>
       <section>
-        <a href="HTML/F2L.html">
+        <a href="WebPage/F2L.php">
           <div class="img">
             <svg viewBox='-0.9 -0.9 1.8 1.8'>
               <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>
@@ -88,7 +83,7 @@
         </a>
       </section>
       <section>
-        <a href="HTML/OLL.html">
+        <a href="WebPage/OLL.html">
           <div class="img">
             <svg viewBox='-0.9 -0.9 1.8 1.8'>
               <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>
@@ -145,7 +140,7 @@
         </a>
       </section>
       <section>
-        <a href="HTML/PLL.html">
+        <a href="WebPage/PLL.html">
           <div class="img">
             <svg viewBox='-0.9 -0.9 1.8 1.8'>
               <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>
@@ -203,13 +198,8 @@
       </section>
     </article>
   </main>
-  <footer>
-    <nav>
-      <ul>
-        <li><a href="">ABOUT</a></li>
-        <li><a href="">CONTACT US</a></li>
-      </ul>
-    </nav>
-  </footer>
+
+  <?php include 'WebPage/DynamicPage/footer.php' ?>
+  
 </body>
 </html>
