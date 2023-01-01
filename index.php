@@ -141,7 +141,7 @@
         </a>
       </section>
       <section>
-        <a href="WebPage/PLL.html">
+        <a href="WebPage/PLL.php">
           <div class="img">
             <svg viewBox='-0.9 -0.9 1.8 1.8'>
               <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>
@@ -198,7 +198,7 @@
         </a>
       </section>
       <section>
-        <a href="WebPage/Simulator.html">
+        <a href="WebPage/Simulator.php">
           <div class="img">
             <svg viewBox='-0.9 -0.9 1.8 1.8'>
               <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>

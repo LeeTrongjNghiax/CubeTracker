@@ -1,6 +1,5 @@
 <script>
-  let images = <?= getAllImagesWithAlgortihms($conn); ?>;
-  console.log(images);
+  let images = <?= getAllImagesWithAlgortihmsWithSpecificTag($conn, $tag); ?>;
 
   images.forEach(element => {
     let algorithms = ``;
@@ -17,7 +16,14 @@
     document.querySelector("article").insertAdjacentHTML( 'beforeend', 
       `<section>
         <div class="num" data-section="F2L"></div>
-        <div class="img">${stringImageTo3DImage(element.content)}</div>
+        <div class="img" data-root-state='${element.content}' data-current-state='${element.content}'>
+          ${stringImageTo3DImage(element.content)}
+          <div class="btnGroup">
+            <button class="change-color" onclick='changeColorScheme(this)'>Change Color Scheme</button>
+            <button class="change-color" onclick='rotate(this, "y")'>Y</button>
+            <button class="change-color" onclick='reset(this)'>Reset</button>
+          </div>
+        </div>
         
         <div class="algorithms">
           <div class="algorithm-row">

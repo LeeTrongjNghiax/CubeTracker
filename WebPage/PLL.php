@@ -10,13 +10,13 @@
   <link rel="stylesheet" href="../CSS/globalVar.css">
   <link rel="stylesheet" href="../CSS/header.css">
   <link rel="stylesheet" href="../CSS/section.css">
-  <link rel="stylesheet" href="../CSS/OLL.css">
+  <link rel="stylesheet" href="../CSS/PLL.css">
   <link rel="stylesheet" href="../CSS/footer.css">
 
   <script src='../JS/eventListener.js' defer></script>
   <script src='../JS/functions.js'></script>
 
-  <title>OLL</title>
+  <title>PLL</title>
 </head>
 <body>
   
@@ -26,13 +26,13 @@
   <?php include 'DynamicPage/header.php' ?>
   
   <main>
-    <h1>OLL Algorithms</h1>
+    <h1>PLL Algorithms</h1>
     <article>
       
     </article>
   </main>
     
-  <?php $tag = "OLL" ?>
+  <?php $tag = "PLL" ?>
   <?php include "DynamicPage/footer.php" ?>
   <?php include '../PHP/loadAlgorithms.php' ?>
 

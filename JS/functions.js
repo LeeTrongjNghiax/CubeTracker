@@ -1,10 +1,10 @@
 numberToColor = (num) => {
   switch (parseInt(num)) {
     case 1: return 'white';
-    case 2: return 'yellow';
-    case 3: return 'green';
-    case 4: return 'blue';
-    case 5: return 'red';
+    case 2: return 'green';
+    case 3: return 'red';
+    case 4: return 'yellow';
+    case 5: return 'blue';
     case 6: return 'orange';
     default: return 'gray';
   }
@@ -242,12 +242,45 @@ randomDate = (start, end) => {
   }
 }
 
-function compare( a, b ) {
-  if ( a.last_nom < b.last_nom ){
-    return -1;
+changeImage = (string, orders) => {
+  let result = ''; 
+
+  for (let i = 0; i < string.length; i++) {
+    switch (string[i]) {
+      case "1": result += orders[0]; break;
+      case "2": result += orders[1]; break;
+      case "3": result += orders[2]; break;
+      case "4": result += orders[3]; break;
+      case "5": result += orders[4]; break;
+      case "6": result += orders[5]; break;
+      default: result += orders[6]; break;
+    }
   }
-  if ( a.last_nom > b.last_nom ){
-    return 1;
-  }
-  return 0;
+
+  return result;
+}
+
+changeColorScheme = (e) => {
+  let content = e.parentElement.parentElement.dataset.currentState;  
+  let result = changeImage(content, ['2', '3', '4', '5', '6', '1', '0']);
+  
+  e.parentElement.parentElement.removeChild( e.parentElement.parentElement.querySelector("svg") );
+  e.parentElement.parentElement.insertAdjacentHTML( 'afterbegin', stringImageTo3DImage(result) );
+  e.parentElement.parentElement.dataset.currentState = result;
+}
+
+rotate = (e, direction) => {
+  let content = e.parentElement.parentElement.dataset.currentState;
+  let result = turn(content, direction);
+
+  e.parentElement.parentElement.removeChild( e.parentElement.parentElement.querySelector("svg") );
+  e.parentElement.parentElement.insertAdjacentHTML( 'afterbegin', stringImageTo3DImage(result) );
+  e.parentElement.parentElement.dataset.currentState = result;
+}
+
+reset = (e) => {
+  let content = e.parentElement.parentElement.dataset.rootState;
+
+  e.parentElement.parentElement.removeChild( e.parentElement.parentElement.querySelector("svg") );
+  e.parentElement.parentElement.insertAdjacentHTML( 'afterbegin', stringImageTo3DImage(content) );
 }

@@ -1,7 +1,8 @@
 let dates = [];
-    let sql = `INSERT INTO image VALUES \n`;
-    let sql2 = `INSERT INTO algorithm (id, userId, imageId, content, note) VALUES \n`;
-    let algAndImg = [
+let sql = `INSERT INTO image VALUES \n`;
+let sql2 = `INSERT INTO algorithm (id, userId, imageId, content, note) VALUES \n`;
+let orders = ['1', '4', '2', '5', '3', '6', '0'];
+let algAndImg = [
   {
     "content": "200000000020000000002220000111111111020000000000000222",
     "algorithms": [
@@ -573,21 +574,24 @@ let dates = [];
   }
 ];
 
-    for (let i = 0; i < 57; i++) {
-      let d = randomDate(new Date('2001-01-20 8:00:00'), new Date('2002-12-30 18:00:00'));
-      dates.push( d.date );
-    }
-    dates = dates.sort();
+for (let i = 0; i < 57; i++) {
+  let d = randomDate(new Date('2001-01-01 08:00:00'), new Date('2001-04-01 20:00:00'));
+  dates.push( d.date );
+}
+dates = dates.sort();
 
-    for (let i = 0; i < 57; i++)
-      dates[i] = new Date(dates[i]);
+for (let i = 0; i < 57; i++)
+  dates[i] = new Date(dates[i]);
 
-    for (let i = 0; i < algAndImg.length; i++)
-      sql += `( "img${dates[i].toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "${algAndImg[i].content}" ),\n`
+for (let i = 0; i < algAndImg.length; i++)
+  sql += `( "img${dates[i].toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "${ changeImage( algAndImg[i].content, orders )}" ),\n`
 
-    for (let i = 0; i < algAndImg.length; i++)
-      for (let j = 0; j < algAndImg[i].algorithms.length; j++) {
-        let date2 = new Date( dates[i] );
-        date2.setSeconds(dates[i].getSeconds() + j + 1)
-        sql2 += `( "alg${date2.toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "u45121201012002", "img${dates[i].toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "${algAndImg[i].algorithms[j]}", "${algAndImg[i].note}" ),\n`
-      }
+for (let i = 0; i < algAndImg.length; i++)
+  for (let j = 0; j < algAndImg[i].algorithms.length; j++) {
+    let date2 = new Date( dates[i] );
+    date2.setSeconds(dates[i].getSeconds() + j + 1)
+    sql2 += `( "alg${date2.toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "u45121201012002", "img${dates[i].toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "${algAndImg[i].algorithms[j]}", "${algAndImg[i].note}" ),\n`
+  }
+
+console.log(sql);
+console.log(sql2);

@@ -55,8 +55,9 @@ section .num {
 section .img {
   grid-area: img;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background-color: var(--algorithm-background-color);
 }
 
@@ -64,6 +65,19 @@ section .img svg {
   width: 10rem;
   height: 10rem;
   background-color: var(--background-color);
+}
+
+section .img .btnGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--background-color);
+}
+
+section .img .btnGroup button {
+  background-color: var(--background-color);
+  width: 100%;
 }
 
 section .img svg g {
