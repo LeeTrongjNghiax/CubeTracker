@@ -21,3 +21,17 @@ INNER JOIN
   WHERE algtag.tagid = "CP"
 ) q2
 ON q1.c1 = q2.c2
+
+SELECT 
+CONCAT(
+  CONCAT(
+    CONCAT(
+      CONCAT(
+        "('", CONCAT(
+          'at', SUBSTRING(id, 4)
+        )
+      ), "', '"
+    ), id
+  ), "', 'OLL'),"
+) 
+AS lmao FROM `algorithm` WHERE 1

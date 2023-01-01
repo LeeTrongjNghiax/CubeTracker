@@ -1,6 +1,10 @@
-INSERT INTO tag VALUES 
+INSERT INTO tag (id, name) VALUES 
   ("F2L", "First 2 Layers"),
-  ("EO", "Egde Orientation of the Last Layer"),
-  ("CO", "Corner Orientation of the Last Layer"),
-  ("EP", "Egde Permutation of the Last Layer"),
-  ("CP", "Corner Permutation of the Last Layer")
+  ("OLL", "Orientation of the Last Layer"),
+  ("PLL", "Permutation of the Last Layer"),
+  ("ELL", "Edge of the Last Layer"),
+  ("CLL", "Corner of the Last Layer"),
+  ("COLL", "Corner Orientation of the Last Layer"),
+  ("CPLL", "Corner Permutation of the Last Layer"),
+  ("EOLL", "Edge Orientation of the Last Layer"),
+  ("EPLL", "Edge Permutation of the Last Layer");
