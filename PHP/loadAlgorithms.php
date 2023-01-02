@@ -16,12 +16,13 @@
     document.querySelector("article").insertAdjacentHTML( 'beforeend', 
       `<section>
         <div class="num" data-section="F2L"></div>
-        <div class="img" data-root-state='${element.content}' data-current-state='${element.content}'>
+        <div class="img" data-root-state='${element.content}' data-current-state='${element.content}' data-rubik-state='3D'>
           ${stringImageTo3DImage(element.content)}
           <div class="btnGroup">
-            <button class="change-color" onclick='changeColorScheme(this)'>Change Color Scheme</button>
-            <button class="change-color" onclick='rotate(this, "y")'>Y</button>
-            <button class="change-color" onclick='reset(this)'>Reset</button>
+            <button class="changeColorScheme" onclick='changeColorScheme(this)'>Change Color Scheme</button>
+            <button class="rotate" onclick='rotate(this, "y")'>Rotate Y</button>
+            <button class="toggleState" onclick='toggleState(this)'>Toggle 2D/3D</button>
+            <button class="reset" onclick='reset(this)'>Reset</button>
           </div>
         </div>
         

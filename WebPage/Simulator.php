@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="color-scheme" content="dark light">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="../CSS/scrollbar.css">
   <link rel="stylesheet" href="../CSS/globalVar.css">
   <link rel="stylesheet" href="../CSS/header.css">
-  <link rel="stylesheet" href="../CSS/section.css">
   <link rel="stylesheet" href="../CSS/footer.css">
 
   <script src="../JS/functions.js"></script>
@@ -19,9 +18,17 @@
       overflow-x: hidden;
     }
 
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: monospace;
+      box-sizing: border-box;
+      font-size: 2vh;
+    }
+
     svg {
-      width: 80vh;
-      height: 80vh;
+      width: 50vh;
+      height: 50vh;
       background-color: var(--background-color);
     }
 
@@ -31,53 +38,261 @@
       stroke-opacity: 0.5;
       stroke-linejoin: round;
     }
+
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin: 1vw;
+    }
+
+    main .input {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-right: auto;
+      margin-left: 1vw;
+    }
+
+    main .input .inp1, 
+    main .input .inp2 {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      /* gap: 1vw; */
+      margin-top: 1vw;
+    }
+
+    main .input .inp0 {
+      width: 100%;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }
+
+    main .input .inp1 .inp1BtnGrp, 
+    main .input .inp2 .inp2BtnGrp {
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+      margin: 0 auto;
+    }
+
+    input {
+      margin-right: auto;
+      box-sizing: border-box;
+      padding: 1vw;
+      width: 100%;
+      border: 0.5vw solid rgb(48 48 48);
+      background: rgb(0 0 0);
+    }
+
+    button, select {
+      user-select: none;
+      display: inline-block;
+      padding: 1vw;
+      margin: 1vw 0vw 1vw 0vw;
+      border-radius: 1vw;
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(40 40 40);
+    }
+    .move {
+      border: 0.5vw solid rgb(0 100 0);
+      background: rgb(0 50 0);
+    }
+    .reset {
+      border: 0.5vw solid rgb(100 0 0);
+      background: rgb(50 0 0);
+    }
+    .reverse {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .inverse {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .mirror {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .btnGroup {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1vw;
+    }
+
+    .btnGroup button {
+      user-select: none;
+      flex-grow: 1;
+      background: rgb(0 0 0);
+      padding: 0.25vw;
+      margin: 0;
+    }
+
+    @media (orientation: portrait) {
+      svg {
+        width: 50vw;
+        height: 50vw;
+      }
+    }
+
+    @media (width <= 1050px) {
+      main {
+        flex-direction: column;
+      }
+    }
+    @media (width <= 520px) {
+      main .input .inp1, main .input .inp2 {
+        flex-direction: column;
+      }
+      main .input .inp1 .inp1BtnGrp button {
+        flex-grow: 1;
+      }
+    }
   </style>
+
 </head>
 <body>
 
   <?php include 'DynamicPage/header.php' ?>
 
   <main>
-    <div class="img"></div>
-    <div class="input">
-      <input class="algorithm" type="text" size=60 pattern="(U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2)( (U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2))*">
-      <button class="move">Move!</button>
-      <button class="reset">Reset</button>
-      <input class="image" type="text" size=60>
-      <button class="load">Load Rubik Cube</button>
+    <div class="img">
+
     </div>
-    <div class="step"></div>
+    <div class="input">
+      <div class="inp0">
+      </div>
+      <div class="inp1">
+        <input class="algorithm" type="text" pattern="(U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2)( (U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2))*">
+        <div class="inp1BtnGrp">
+          <button class="move">Move!</button>
+          <button class="reset">Reset</button>
+          <button class="reverse">Reverse Algoritihm</button>
+          <button class="inverse">Inverse Algorithm</button>
+          <button class="mirror">Mirror Algorithm</button>
+          <button class="rotate">Rotate Algorithm</button>
+        </div>
+      </div>
+      <div class="inp2">
+        <input class="image" type="text" size=31.5>
+        <div class="inp2BtnGrp">
+          <button class="load">Load Rubik Cube</button>
+          <button class="copy">Copy Rubik Cube</button>
+          <select name="" id="">
+            <option value="crossCube">Cross Cube</option>
+            <option value="f2lCube">F2L Cube</option>
+            <option value="ollCube">OLL Cube</option>
+            <option value="solvedCube">Solved Cube</option>
+            <option value="randomCube">Random Cube</option>
+          </select>
+          <button class="lmao">Lmao</button>
+        </div>
+      </div>
+      <div class="step"></div>
+    </div>  
   </main>
 
-  <?php include 'DynamicPage/footer.php' ?>
+  <?php include "DynamicPage/footer.php" ?>
 
   <script>
-    document.querySelector(".algorithm").value = "";
+    let cubeImage = '444444444555555555333333333111111111222222222666666666';
 
-    let cubeImage = '111111111222222222333333333444444444555555555666666666';
+    document.querySelector(".algorithm").value = "R U R' U R U' R' U' R' F R F'";
+    
     document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-    document.querySelector(".step").innerHTML = cubeImage;
+    document.querySelector(".image").value = cubeImage;
 
     document.querySelector(".move").addEventListener("click", (e) => {
       let move = document.querySelector(".algorithm").value;
       cubeImage = turn( cubeImage.replace(/(_|\|)/g, ""), move );
       document.querySelector(".img").removeChild( document.querySelector(".img svg") );
       document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".step").innerHTML = cubeImage;
+      document.querySelector(".image").value = cubeImage;
     });
 
     document.querySelector(".reset").addEventListener("click", (e) => {
-      cubeImage = '111111111222222222333333333444444444555555555666666666';
+      cubeImage = '400000000500555550330003333111111111200222220666666000';
       document.querySelector(".img").removeChild( document.querySelector(".img svg") );
       document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".step").innerHTML = cubeImage;
+      document.querySelector(".load").value = cubeImage;
     });
 
     document.querySelector(".load").addEventListener("click", (e) => {
       cubeImage = document.querySelector(".image").value;
       document.querySelector(".img").removeChild( document.querySelector(".img svg") );
       document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".step").innerHTML = cubeImage;
+      document.querySelector(".image").value = cubeImage;
+    });
+
+    document.querySelector(".reverse").addEventListener("click", () => {
+      document.querySelector(".algorithm").value = 
+        document.querySelector(".algorithm").value.split(" ").reverse().join(" ");
+    });
+
+    document.querySelector(".inverse").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      arr.forEach(elem => {
+        if (elem.match(/^\w$/))
+          result.push(elem + "'");
+        else if (elem.match(/^\w'$/))
+          result.push(elem.replace("'", ""));
+        else
+          result.push(elem);
+      });
+
+      algorithm.value = result.join(" ");
+    });
+
+    document.querySelector(".mirror").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      arr.forEach(elem => {
+        if (elem.match(/^R$/)) result.push(elem.replace("R", "L'"));
+        else if (elem.match(/^L$/)) result.push(elem.replace("L", "R'"));
+        else if (elem.match(/^R'$/)) result.push(elem.replace("R'", "L"));
+        else if (elem.match(/^L'$/)) result.push(elem.replace("L'", "R"));
+        else if (elem.match(/^r$/)) result.push(elem.replace("r", "l'"));
+        else if (elem.match(/^l$/)) result.push(elem.replace("l", "r'"));
+        else if (elem.match(/^r'$/)) result.push(elem.replace("r'", "l"));
+        else if (elem.match(/^l'$/)) result.push(elem.replace("l'", "r"));
+        else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+        else if (elem.match(/^\w$/)) result.push(elem + "'");
+        else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+        else result.push(elem);
+      });
+
+      algorithm.value = result.join(" ");
+    });
+
+    document.querySelector(".rotate").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      arr.forEach(elem => {
+        if (elem.match(/^R['2]?$/)) result.push(elem.replace("R", "L"));
+        else if (elem.match(/^L['2]?$/)) result.push(elem.replace("L", "R"));
+        else if (elem.match(/^r['2]?$/)) result.push(elem.replace("r", "l"));
+        else if (elem.match(/^l['2]?$/)) result.push(elem.replace("l", "r"));
+        else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+        else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+        else result.push(elem);
+      });
+
+      algorithm.value = result.join(" ");
     });
     
     document.addEventListener('keydown', (e) => {
@@ -88,9 +303,6 @@
         case "r":
           document.querySelector(".reset").click();
           break;
-        // case "l":
-        //   document.querySelector(".load").click();
-        //   break;
         case "a":
           document.querySelector(".algorithm").focus();
           break;
@@ -99,6 +311,107 @@
           break;
       } 
     });
+
+    document.querySelector(".copy").addEventListener("click", () => {
+      navigator.clipboard.writeText(document.querySelector(".image").value);
+      // alert("Copied the text: " + document.querySelector(".image").value);
+    });
+
+    async function paste(input) {
+      const text = await navigator.clipboard.readText();
+      input.value = text;
+    }
+
+    document.querySelector(".lmao").addEventListener("click", () => {
+      // paste(document.querySelector(".algorithm"));
+      document.querySelector(".inverse").click();
+      document.querySelector(".reverse").click();
+      document.querySelector(".reset").click();
+      document.querySelector(".move").click();
+      document.querySelector(".copy").click();
+    });
+
+    document.querySelector("select").addEventListener("change", (e) => {
+      let cubeImage = '400000000500555550330003333111111111200222220666666000';
+
+      switch (document.querySelector("select").value) {
+        case "crossCube": 
+          document.querySelector(".image").value = "400000000500005000300000030110101010200002000600600000";
+          break;
+        case "f2lCube": 
+          document.querySelector(".image").value = "400000000500555550330003333111111111200222220666666000";
+          break;
+        case "ollCube": 
+          document.querySelector(".image").value = "444444444500555550330003333111111111200222220666666000";
+          break;
+        case "solvedCube": 
+          document.querySelector(".image").value = "444444444555555555333333333111111111222222222666666666";
+          break;
+        case "randomCube": 
+          document.querySelector(".image").value = turn( "444444444555555555333333333111111111222222222666666666", generateScramble(20) );
+          break;
+      }
+    });
+
+    randomInt = (start, stop) => Math.round(Math.random() * (stop - start) + start);
+
+    generateScramble = (length) => {
+      let move = ["U", "D", "F", "B", "R", "L", "M", "E", "S"];
+      let rotate = ["x", "y", "z"];
+      let turnCount = ["", "'", "2"];
+
+      let result = [];
+
+      for (let i = 0; i < length; i++) {
+        result.push( move[randomInt(0, move.length - 1)] + turnCount[randomInt(0, turnCount.length - 1)] );
+      }
+
+      return result.join(" ");
+    }
+    
+    addNewMove = () => {
+      // let moves = [
+      //   ["U", "D", "F", "B", "R", "L"],
+      //   ["U'", "D'", "F'", "B'", "R'", "L'"],
+      //   ["U2", "D2", "F2", "B2", "R2", "L2"],
+      //   ["x'", "y'", "z'", "x2", "y2", "z2"],
+      //   ["x", "y", "z", "M", "E", "S"],
+      //   ["M2", "E2", "S2", "M'", "E'", "S'"],
+      //   ["u", "d", "f", "b", "r", "l"],
+      //   ["u'", "d'", "f'", "b'", "r'", "l'"],
+      //   ["u2", "d2", "f2", "b2", "r2", "l2"],
+      // ];
+      let moves = [
+        ["U", "D", "F", "B", "R", "L", "M", "E", "S"],
+        ["U'", "D'", "F'", "B'", "R'", "L'", "M'", "E'", "S'"],
+        ["U2", "D2", "F2", "B2", "R2", "L2", "M2", "E2", "S2"],
+        ["x", "y", "z", "u", "d", "f", "b", "r", "l"],
+        ["x'", "y'", "z'", "u'", "d'", "f'", "b'", "r'", "l'"],
+        ["x2", "y2", "z2", "u2", "d2", "f2", "b2", "r2", "l2"],
+      ];
+    
+      for (let i = 0; i < moves.length; i++) {
+        let btnGroup = document.createElement("div");
+        btnGroup.setAttribute("class", "btnGroup");
+        for (let j = 0; j < moves[i].length; j++) {
+          let btn = document.createElement("button");
+          btn.innerHTML = moves[i][j];
+          btnGroup.appendChild( btn );
+          btn.setAttribute("onclick", "move(this)");
+          btn.setAttribute("class", "movement");
+        }
+        document.querySelector(".inp0").appendChild( btnGroup );
+      }
+    }
+
+    move = (e) => {
+      cubeImage = turn( cubeImage.replace(/(_|\|)/g, ""), e.innerHTML );
+      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
+      document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
+      document.querySelector(".image").value = cubeImage;
+    }
+
+    addNewMove();
   </script>
 </body>
 </html>

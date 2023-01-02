@@ -1,5 +1,9 @@
 DELETE FROM image;
 
+-- F2L
+
+INSERT INTO image VALUES 
+
 -- OLL
 
 INSERT INTO image VALUES 

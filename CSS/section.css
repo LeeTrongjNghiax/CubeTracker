@@ -67,24 +67,26 @@ section .img svg {
   background-color: var(--background-color);
 }
 
-section .img .btnGroup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  background-color: var(--background-color);
-}
-
-section .img .btnGroup button {
-  background-color: var(--background-color);
-  width: 100%;
-}
-
 section .img svg g {
   opacity: 1;
   stroke-width: 0;
   stroke-opacity: 0.5;
   stroke-linejoin: round;
+}
+
+section .img .btnGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  --background-color: rgb(0 0 0 / 1);
+  background-color: var(--background-color);
+}
+
+section .img .btnGroup button {
+  background-color: var(--background-color);
+  margin: 0.5rem;
+  width: 90%;
 }
 
 section .algorithms {
