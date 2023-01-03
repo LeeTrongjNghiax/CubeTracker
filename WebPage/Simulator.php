@@ -13,6 +13,68 @@
 
   <script src="../JS/functions.js"></script>
 
+  <script>
+    async function paste(input) {
+      const text = await navigator.clipboard.readText();
+      input.value = text;
+    }
+
+    randomInt = (start, stop) => Math.round(Math.random() * (stop - start) + start);
+
+    generateScramble = (length) => {
+      let move = ["U", "D", "F", "B", "R", "L", "M", "E", "S"];
+      let rotate = ["x", "y", "z"];
+      let turnCount = ["", "'", "2"];
+
+      let result = [];
+
+      for (let i = 0; i < length; i++) {
+        result.push( move[randomInt(0, move.length - 1)] + turnCount[randomInt(0, turnCount.length - 1)] );
+      }
+
+      return result.join(" ");
+    }
+
+    addNewMove = () => {
+      let moves = [
+        ["U", "D", "F", "B", "R", "L", "M", "E", "S"],
+        ["U'", "D'", "F'", "B'", "R'", "L'", "M'", "E'", "S'"],
+        ["U2", "D2", "F2", "B2", "R2", "L2", "M2", "E2", "S2"],
+        ["u", "d", "f", "b", "r", "l", "x", "y", "z"],
+        ["u'", "d'", "f'", "b'", "r'", "l'", "x'", "y'", "z'"],
+        ["u2", "d2", "f2", "b2", "r2", "l2", "x2", "y2", "z2"],
+      ];
+
+      for (let i = 0; i < moves.length; i++) {
+        let btnGroup = document.createElement("div");
+        btnGroup.setAttribute("class", "btnGroup");
+        for (let j = 0; j < moves[i].length; j++) {
+          let btn = document.createElement("button");
+          btn.innerHTML = moves[i][j];
+          btnGroup.appendChild( btn );
+          btn.setAttribute("onclick", "move(this)");
+          btn.setAttribute("class", "movement");
+        }
+        document.querySelector(".inp0").appendChild( btnGroup );
+      }
+    }
+
+    move = (e) => {
+      updateCube(turn( document.querySelector(".image").value.replace(/(_|\|)/g, ""), e.innerHTML ));
+    }
+
+    updateCube = (move) => {
+      if (document.querySelector(".img").dataset.state == "3d")
+        func = stringImageTo3DImage;
+      else
+        func = stringImageTo2DImage;
+
+      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
+      document.querySelector(".img").insertAdjacentHTML( 'beforeend', func( move.replace(/(_|\|)/g, "") ) );
+      document.querySelector(".image").value = move;
+    }
+  </script>
+
   <style>
     body {
       overflow-x: hidden;
@@ -164,7 +226,7 @@
   <?php include 'DynamicPage/header.php' ?>
 
   <main>
-    <div class="img">
+    <div class="img" data-state="3d">
 
     </div>
     <div class="input">
@@ -186,14 +248,20 @@
         <div class="inp2BtnGrp">
           <button class="load">Load Rubik Cube</button>
           <button class="copy">Copy Rubik Cube</button>
-          <select name="" id="">
+          <select name="rubikType" id="">
             <option value="crossCube">Cross Cube</option>
             <option value="f2lCube">F2L Cube</option>
             <option value="ollCube">OLL Cube</option>
             <option value="solvedCube">Solved Cube</option>
             <option value="randomCube">Random Cube</option>
           </select>
+          <select name="direction" id="">
+            <option value="x">X</option>
+            <option value="y">Y</option>
+            <option value="z">Z </option>
+          </select>
           <button class="lmao">Lmao</button>
+          <button class="toggleState">3D Rubik's Cube</button>
         </div>
       </div>
       <div class="step"></div>
@@ -206,31 +274,16 @@
     let cubeImage = '444444444555555555333333333111111111222222222666666666';
 
     document.querySelector(".algorithm").value = "R U R' U R U' R' U' R' F R F'";
-    
     document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
     document.querySelector(".image").value = cubeImage;
 
-    document.querySelector(".move").addEventListener("click", (e) => {
-      let move = document.querySelector(".algorithm").value;
-      cubeImage = turn( cubeImage.replace(/(_|\|)/g, ""), move );
-      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
-      document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".image").value = cubeImage;
-    });
+    document.querySelector(".move").addEventListener("click", () => 
+      updateCube( turn( document.querySelector(".image").value.replace(/(_|\|)/g, ""), document.querySelector(".algorithm").value ) )
+    );
 
-    document.querySelector(".reset").addEventListener("click", (e) => {
-      cubeImage = '400000000500555550330003333111111111200222220666666000';
-      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
-      document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".load").value = cubeImage;
-    });
-
-    document.querySelector(".load").addEventListener("click", (e) => {
-      cubeImage = document.querySelector(".image").value;
-      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
-      document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".image").value = cubeImage;
-    });
+    document.querySelector(".reset").addEventListener("click", () => 
+      updateCube('444444444555555555333333333111111111222222222666666666')
+    );
 
     document.querySelector(".reverse").addEventListener("click", () => {
       document.querySelector(".algorithm").value = 
@@ -243,12 +296,9 @@
       let result = [];
 
       arr.forEach(elem => {
-        if (elem.match(/^\w$/))
-          result.push(elem + "'");
-        else if (elem.match(/^\w'$/))
-          result.push(elem.replace("'", ""));
-        else
-          result.push(elem);
+        if (elem.match(/^\w$/)) result.push(elem + "'");
+        else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+        else result.push(elem);
       });
 
       algorithm.value = result.join(" ");
@@ -259,20 +309,56 @@
       let arr = algorithm.value.split(" ");
       let result = [];
 
-      arr.forEach(elem => {
-        if (elem.match(/^R$/)) result.push(elem.replace("R", "L'"));
-        else if (elem.match(/^L$/)) result.push(elem.replace("L", "R'"));
-        else if (elem.match(/^R'$/)) result.push(elem.replace("R'", "L"));
-        else if (elem.match(/^L'$/)) result.push(elem.replace("L'", "R"));
-        else if (elem.match(/^r$/)) result.push(elem.replace("r", "l'"));
-        else if (elem.match(/^l$/)) result.push(elem.replace("l", "r'"));
-        else if (elem.match(/^r'$/)) result.push(elem.replace("r'", "l"));
-        else if (elem.match(/^l'$/)) result.push(elem.replace("l'", "r"));
-        else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
-        else if (elem.match(/^\w$/)) result.push(elem + "'");
-        else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
-        else result.push(elem);
-      });
+      switch (document.querySelector("select[name=direction]").value) {
+        case "x":
+          arr.forEach(elem => {
+            if (elem.match(/^R$/)) result.push(elem.replace("R", "L'"));
+            else if (elem.match(/^L$/)) result.push(elem.replace("L", "R'"));
+            else if (elem.match(/^R'$/)) result.push(elem.replace("R'", "L"));
+            else if (elem.match(/^L'$/)) result.push(elem.replace("L'", "R"));
+            else if (elem.match(/^r$/)) result.push(elem.replace("r", "l'"));
+            else if (elem.match(/^l$/)) result.push(elem.replace("l", "r'"));
+            else if (elem.match(/^r'$/)) result.push(elem.replace("r'", "l"));
+            else if (elem.match(/^l'$/)) result.push(elem.replace("l'", "r"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+        case "y":
+          arr.forEach(elem => {
+            if (elem.match(/^U$/)) result.push(elem.replace("U", "D'"));
+            else if (elem.match(/^D$/)) result.push(elem.replace("D", "U'"));
+            else if (elem.match(/^U'$/)) result.push(elem.replace("U'", "D"));
+            else if (elem.match(/^D'$/)) result.push(elem.replace("D'", "U"));
+            else if (elem.match(/^u$/)) result.push(elem.replace("u", "d'"));
+            else if (elem.match(/^d$/)) result.push(elem.replace("d", "u'"));
+            else if (elem.match(/^u'$/)) result.push(elem.replace("u'", "d"));
+            else if (elem.match(/^d'$/)) result.push(elem.replace("d'", "u"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+        case "z":
+          arr.forEach(elem => {
+            if (elem.match(/^F$/)) result.push(elem.replace("F", "B'"));
+            else if (elem.match(/^B$/)) result.push(elem.replace("B", "F'"));
+            else if (elem.match(/^F'$/)) result.push(elem.replace("F'", "B"));
+            else if (elem.match(/^B'$/)) result.push(elem.replace("B'", "F"));
+            else if (elem.match(/^f$/)) result.push(elem.replace("f", "b'"));
+            else if (elem.match(/^b$/)) result.push(elem.replace("b", "f'"));
+            else if (elem.match(/^f'$/)) result.push(elem.replace("f'", "b"));
+            else if (elem.match(/^b'$/)) result.push(elem.replace("b'", "f"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+      }
 
       algorithm.value = result.join(" ");
     });
@@ -282,56 +368,54 @@
       let arr = algorithm.value.split(" ");
       let result = [];
 
-      arr.forEach(elem => {
-        if (elem.match(/^R['2]?$/)) result.push(elem.replace("R", "L"));
-        else if (elem.match(/^L['2]?$/)) result.push(elem.replace("L", "R"));
-        else if (elem.match(/^r['2]?$/)) result.push(elem.replace("r", "l"));
-        else if (elem.match(/^l['2]?$/)) result.push(elem.replace("l", "r"));
-        else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
-        else if (elem.match(/^[MES]$/)) result.push(elem + "'");
-        else result.push(elem);
-      });
+      switch (document.querySelector("select[name=direction]").value) {
+        case "x":
+          arr.forEach(elem => {
+            if (elem.match(/^R['2]?$/)) result.push(elem.replace("R", "L"));
+            else if (elem.match(/^L['2]?$/)) result.push(elem.replace("L", "R"));
+            else if (elem.match(/^r['2]?$/)) result.push(elem.replace("r", "l"));
+            else if (elem.match(/^l['2]?$/)) result.push(elem.replace("l", "r"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+        case "y":
+          arr.forEach(elem => {
+            if (elem.match(/^U['2]?$/)) result.push(elem.replace("U", "D"));
+            else if (elem.match(/^D['2]?$/)) result.push(elem.replace("D", "U"));
+            else if (elem.match(/^u['2]?$/)) result.push(elem.replace("u", "d"));
+            else if (elem.match(/^d['2]?$/)) result.push(elem.replace("d", "u"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+        case "z":
+          arr.forEach(elem => {
+            if (elem.match(/^F['2]?$/)) result.push(elem.replace("F", "B"));
+            else if (elem.match(/^B['2]?$/)) result.push(elem.replace("B", "F"));
+            else if (elem.match(/^f['2]?$/)) result.push(elem.replace("f", "b"));
+            else if (elem.match(/^b['2]?$/)) result.push(elem.replace("b", "f"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+      }
 
       algorithm.value = result.join(" ");
     });
     
-    document.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case "Enter":
-          document.querySelector(".move").click();
-          break;
-        case "r":
-          document.querySelector(".reset").click();
-          break;
-        case "a":
-          document.querySelector(".algorithm").focus();
-          break;
-        case "i":
-          document.querySelector(".image").focus();
-          break;
-      } 
-    });
+    document.querySelector(".load").addEventListener("click", () => 
+      updateCube(document.querySelector(".image").value)
+    );
 
     document.querySelector(".copy").addEventListener("click", () => {
       navigator.clipboard.writeText(document.querySelector(".image").value);
-      // alert("Copied the text: " + document.querySelector(".image").value);
     });
 
-    async function paste(input) {
-      const text = await navigator.clipboard.readText();
-      input.value = text;
-    }
-
-    document.querySelector(".lmao").addEventListener("click", () => {
-      // paste(document.querySelector(".algorithm"));
-      document.querySelector(".inverse").click();
-      document.querySelector(".reverse").click();
-      document.querySelector(".reset").click();
-      document.querySelector(".move").click();
-      document.querySelector(".copy").click();
-    });
-
-    document.querySelector("select").addEventListener("change", (e) => {
+    document.querySelector("select[name=rubikType]").addEventListener("change", (e) => {
       let cubeImage = '400000000500555550330003333111111111200222220666666000';
 
       switch (document.querySelector("select").value) {
@@ -353,52 +437,44 @@
       }
     });
 
-    randomInt = (start, stop) => Math.round(Math.random() * (stop - start) + start);
+    document.querySelector(".lmao").addEventListener("click", () => {
+      // paste(document.querySelector(".algorithm"));
+      document.querySelector(".inverse").click();
+      document.querySelector(".reverse").click();
+      document.querySelector(".reset").click();
+      document.querySelector(".move").click();
+      document.querySelector(".copy").click();
+    });
 
-    generateScramble = (length) => {
-      let move = ["U", "D", "F", "B", "R", "L", "M", "E", "S"];
-      let rotate = ["x", "y", "z"];
-      let turnCount = ["", "'", "2"];
-
-      let result = [];
-
-      for (let i = 0; i < length; i++) {
-        result.push( move[randomInt(0, move.length - 1)] + turnCount[randomInt(0, turnCount.length - 1)] );
+    document.querySelector(".toggleState").addEventListener("click", () => {
+      if (document.querySelector(".img").dataset.state == "3d") {
+        document.querySelector(".img").dataset.state = "2d";
+        document.querySelector(".toggleState").innerText = "2D Rubik's Cube";
+      }
+      else {
+        document.querySelector(".img").dataset.state = "3d";
+        document.querySelector(".toggleState").innerText = "3D Rubik's Cube";
       }
 
-      return result.join(" ");
-    }
-    
-    addNewMove = () => {
-      let moves = [
-        ["U", "D", "F", "B", "R", "L", "M", "E", "S"],
-        ["U'", "D'", "F'", "B'", "R'", "L'", "M'", "E'", "S'"],
-        ["U2", "D2", "F2", "B2", "R2", "L2", "M2", "E2", "S2"],
-        ["x", "y", "z", "u", "d", "f", "b", "r", "l"],
-        ["x'", "y'", "z'", "u'", "d'", "f'", "b'", "r'", "l'"],
-        ["x2", "y2", "z2", "u2", "d2", "f2", "b2", "r2", "l2"],
-      ];
-    
-      for (let i = 0; i < moves.length; i++) {
-        let btnGroup = document.createElement("div");
-        btnGroup.setAttribute("class", "btnGroup");
-        for (let j = 0; j < moves[i].length; j++) {
-          let btn = document.createElement("button");
-          btn.innerHTML = moves[i][j];
-          btnGroup.appendChild( btn );
-          btn.setAttribute("onclick", "move(this)");
-          btn.setAttribute("class", "movement");
-        }
-        document.querySelector(".inp0").appendChild( btnGroup );
-      }
-    }
+      updateCube(document.querySelector(".image").value);
+    });
 
-    move = (e) => {
-      cubeImage = turn( cubeImage.replace(/(_|\|)/g, ""), e.innerHTML );
-      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
-      document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
-      document.querySelector(".image").value = cubeImage;
-    }
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case "Enter":
+          document.querySelector(".move").click();
+          break;
+        case "r":
+          document.querySelector(".reset").click();
+          break;
+        case "a":
+          document.querySelector(".algorithm").focus();
+          break;
+        case "i":
+          document.querySelector(".image").focus();
+          break;
+      } 
+    });
 
     addNewMove();
   </script>
