@@ -1,5 +1,4 @@
 <?php
-
   function getAllImagesWithAlgortihms($conn) {
     $images = array();
 
@@ -58,4 +57,27 @@
     return json_encode( $images );
   }
 
+  function getImageByContent($conn, $content) {
+    $sql = "SELECT * FROM image WHERE content = '" . $content . "';";
+
+	  $result = $conn -> query($sql);
+
+    if ( $result -> num_rows > 0 ) {
+      while ( $row = $result -> fetch_assoc() ) {
+        return $row;
+      }
+    }
+  }
+
+  function checkImageByContent($conn, $content) {
+    $sql = "SELECT * FROM image WHERE content = '" . $content . "';";
+
+	  $result = $conn -> query($sql);
+
+    if ( $result -> num_rows > 0 ) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 ?>

@@ -85,7 +85,11 @@
       margin: 0;
       font-family: monospace;
       box-sizing: border-box;
-      font-size: 2vh;
+      font-size: 3vh;
+    }
+
+    main {
+      background-color: var(--background-color);
     }
 
     svg {
@@ -124,7 +128,6 @@
       display: flex;
       align-items: center;
       flex-direction: column;
-      /* gap: 1vw; */
       margin-top: 1vw;
     }
 
@@ -160,7 +163,7 @@
       margin: 1vw 0vw 1vw 0vw;
       border-radius: 1vw;
       border: 0.5vw solid rgb(100 100 100);
-      background: rgb(40 40 40);
+      background-color: var(--background-color);
     }
     .move {
       border: 0.5vw solid rgb(0 100 0);
@@ -182,6 +185,10 @@
       border: 0.5vw solid rgb(100 100 100);
       background: rgb(18 18 18);
     }
+    .rotate  {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
     .btnGroup {
       width: 100%;
       display: flex;
@@ -193,7 +200,7 @@
     .btnGroup button {
       user-select: none;
       flex-grow: 1;
-      background: rgb(0 0 0);
+      background-color: var(--header-background-color);
       padding: 0.25vw;
       margin: 0;
     }
@@ -459,22 +466,22 @@
       updateCube(document.querySelector(".image").value);
     });
 
-    document.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case "Enter":
-          document.querySelector(".move").click();
-          break;
-        case "r":
-          document.querySelector(".reset").click();
-          break;
-        case "a":
-          document.querySelector(".algorithm").focus();
-          break;
-        case "i":
-          document.querySelector(".image").focus();
-          break;
-      } 
-    });
+    // document.addEventListener('keydown', (e) => {
+    //   switch (e.key) {
+    //     case "Enter":
+    //       document.querySelector(".move").click();
+    //       break;
+    //     case "r":
+    //       document.querySelector(".reset").click();
+    //       break;
+    //     case "a":
+    //       document.querySelector(".algorithm").focus();
+    //       break;
+    //     case "i":
+    //       document.querySelector(".image").focus();
+    //       break;
+    //   } 
+    // });
 
     addNewMove();
   </script>

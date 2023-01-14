@@ -33,7 +33,7 @@ CREATE TABLE algorithm (
   note varchar(1000) DEFAULT NULL,
   PRIMARY KEY (id),
   CONSTRAINT algorithm_ibfk_1 FOREIGN KEY (userId) REFERENCES user (id),
-  CONSTRAINT algorithm_ibfk_2 FOREIGN KEY (imageId) REFERENCES image (id)
+  CONSTRAINT algorithm_ibfk_2 FOREIGN KEY (imageId) REFERENCES image (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE algorithmrecord (

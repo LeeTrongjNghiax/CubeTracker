@@ -24,6 +24,7 @@
   <?php include '../DAO/Algorithm_DAO.php' ?>
   <?php include '../DAO/Image_DAO.php' ?>
   <?php include 'DynamicPage/header.php' ?>
+  <?php $tag = "PLL" ?>
   
   <main>
     <h1>PLL Algorithms</h1>
@@ -32,9 +33,8 @@
     </article>
   </main>
     
-  <?php $tag = "PLL" ?>
   <?php include "DynamicPage/footer.php" ?>
-  <?php include '../PHP/loadAlgorithms.php' ?>
+  <?php include "DynamicPage/loadAlgorithms.php" ?>
 
 </body>
 

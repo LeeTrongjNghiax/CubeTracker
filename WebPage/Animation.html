@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="--z:0deg; --y:0deg; --x:0deg;">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,9 @@
     :root {
       --container-length: 300px;
       --box-length: 200px;
+      --x: 0deg;
+      --y: 0deg;
+      --z: 0deg;
     }
     * {
         margin    : 0;
@@ -21,17 +24,18 @@
 
     body {
         width          : 100%;
-        min-height     : 100vh;
+        min-height     : 90vh;
         background     : rgb(18 18 18);
         overflow       : hidden;
         display        : flex;
+        flex-direction : column;
         align-items    : center;
         justify-content: center;
     }
 
     .container {
         width           : 100vh;
-        height          : 100vh;
+        height          : 80vh;
         display         : flex;
         align-items     : center;
         justify-content : center;
@@ -39,14 +43,14 @@
 
     .rubikCube {
         width           : 100%;
-        height          : 100%;
+        height          : 80%;
         display         : flex;
         align-items     : center;
         justify-content : center;
         perspective     : 10000px;
         transform-style : preserve-3d;
         transform-origin: center center center;
-        transform       : rotateY(45deg) rotateX(-45deg) rotateZ(-45deg);
+        transform       : rotateY(45deg) rotateX(-45deg) rotateZ(-45deg) rotateX(30deg);
     }
 
     .box {
@@ -78,89 +82,9 @@
         transform: translate(-50%, -50%);
     }
 
-    .box.U {
-        transform: translateY(calc(-1 * var(--box-length)));
-    }
-    .box.UR {
-        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(1 * var(--box-length)));
-    }
-    .box.R {
-        transform: translateX(calc(1 * var(--box-length)));
-    }
-    .box.DR {
-        transform: translateY(calc(1 * var(--box-length))) translateX(calc(1 * var(--box-length)));
-    }
-    .box.D {
-        transform: translateY(calc(1 * var(--box-length)));
-    }
-    .box.DL {
-        transform: translateY(calc(1 * var(--box-length))) translateX(calc(-1 * var(--box-length)));
-    }
-    .box.L {
-        transform: translateX(calc(-1 * var(--box-length)));
-    }
-    .box.UL {
-        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(-1 * var(--box-length)));
-    }
-
-
-    .box.F {
-        transform: translateZ(calc(1 * var(--box-length)));
-    }
-    .box.UF {
-        transform: translateY(calc(-1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
     .box.UFR {
-        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
+        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(1 * var(--box-length))) translateZ(calc(1 * var(--box-length))) ;
     }
-    .box.FR {
-        transform: translateX(calc(1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
-    .box.DFR {
-        transform: translateY(calc(1 * var(--box-length))) translateX(calc(1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
-    .box.DF {
-        transform: translateY(calc(1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
-    .box.DFL {
-        transform: translateY(calc(1 * var(--box-length))) translateX(calc(-1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
-    .box.FL {
-        transform: translateX(calc(-1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
-    .box.UFL {
-        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(-1 * var(--box-length))) translateZ(calc(1 * var(--box-length)));
-    }
-
-
-    .box.B {
-        transform: translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.UB {
-        transform: translateY(calc(-1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.UBR {
-        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.BR {
-        transform: translateX(calc(1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.DBR {
-        transform: translateY(calc(1 * var(--box-length))) translateX(calc(1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.DB {
-        transform: translateY(calc(1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.DBL {
-        transform: translateY(calc(1 * var(--box-length))) translateX(calc(-1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.BL {
-        transform: translateX(calc(-1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-    .box.UBL {
-        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(-1 * var(--box-length))) translateZ(calc(-1 * var(--box-length)));
-    }
-
 
     .top {
         bottom    : calc(var(--box-length) / 2);
@@ -429,14 +353,68 @@
     </div>
   </div>
   <div class="controller">
-    Rotate F
+    <div class="inp">
+      <label for="rotateX">X</label>
+      <input id="rotateX" type="range" value="0" min="-360" max="360" step="45">
+    </div>
+    <div class="inp">
+      <label for="rotateY">Y</label>
+      <input id="rotateY" type="range" value="0" min="-360" max="360" step="45">
+    </div>
+    <div class="inp">
+      <label for="rotateZ">Z</label>
+      <input id="rotateZ" type="range" value="0" min="-360" max="360" step="45">
+    </div>
+    <div class="inp">
+      <label for="originX">Origin X</label>
+      <input id="originX" type="range" value="0" min="-500" max="500" step="50">
+    </div>
+    <div class="inp">
+      <label for="originY">Origin Y</label>
+      <input id="originY" type="range" value="0" min="-500" max="500" step="50">
+    </div>
+    <div class="inp">
+      <label for="originZ">Origin Z</label>
+      <input id="originZ" type="range" value="0" min="-500" max="500" step="50">
+    </div>
   </div>
 
   <script>
-    document.querySelector(".controller").addEventListener("click", () => {
-      // document.querySelector(".UFR").style.transformOrigin = "50% 50%";
-      console.log( window.getComputedStyle(document.querySelector('.UFR')).transform );
-      document.querySelector(".UFR").style.transform += "rotateZ(45deg)";
+    let originX = 500;
+    let originY = 500;
+    let originZ = 500;
+    document.querySelector(".box.UFR").style.transformOrigin = `${originX}% ${originY}% ${originZ}%`;
+
+    document.querySelector("#rotateX").addEventListener("change", () => {
+      document.querySelector(".UFR").style.transform 
+        += `rotateX(${document.querySelector("#rotateX").value}deg)`;
+      document.documentElement.style.setProperty('--x', `${document.querySelector("#rotateX").value}deg`);
+    });
+    document.querySelector("#rotateY").addEventListener("change", () => {
+      document.querySelector(".UFR").style.transform 
+        += `rotateY(${document.querySelector("#rotateY").value}deg)`;
+      document.documentElement.style.setProperty('--y', `${document.querySelector("#rotateY").value}deg`);
+    });
+    document.querySelector("#rotateZ").addEventListener("change", () => {
+      document.querySelector(".UFR").style.transform 
+        += `rotateZ(${document.querySelector("#rotateZ").value}deg)`;
+      document.documentElement.style.setProperty('--z', `${document.querySelector("#rotateZ").value}deg`);
+    });
+    document.querySelector("#originX").addEventListener("change", () => {
+      console.log("lmao");
+      document.querySelector(".box.UFR").style.transformOrigin 
+        = `${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`;
+    });
+    document.querySelector("#originY").addEventListener("change", () => {
+      console.log("lmao");
+      document.querySelector(".box.UFR").style.transformOrigin 
+        = `${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`;
+    });
+    document.querySelector("#originZ").addEventListener("change", () => {
+      console.log(`${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`);
+      console.log();
+      document.querySelector(".box.UFR").style.transformOrigin 
+        = `${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`;
     });
   </script>
 </body>

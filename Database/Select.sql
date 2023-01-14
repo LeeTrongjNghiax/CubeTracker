@@ -35,3 +35,15 @@ CONCAT(
   ), "', 'OLL'),"
 ) 
 AS lmao FROM `algorithm` WHERE 1
+
+SELECT * FROM algorithm alg JOIN image img
+ON img.id = alg.imageId WHERE img.content = '400000000500335550350003331111111115200222220666666000';
+
+DELETE FROM algorithm WHERE id IN (
+  'alg02170309012023',
+  'alg04140309012023',
+  'alg19100309012023',
+  'alg25170309012023',
+  'alg44100309012023',
+  'alg55100309012023'
+)

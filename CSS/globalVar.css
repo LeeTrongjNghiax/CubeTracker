@@ -19,16 +19,17 @@
   --text-selection-background-color: rgb(255 255 255 / 1);
   --text-color: rgb(255 255 255 / 1);
 
-  --header-background-color: rgb(30 30 30 / 1);
-  --footer-background-color: rgb(0 0 0 / 1);
+  --header-background-color: rgb(4 0 33 / 1);
+  --footer-background-color: rgb(4 0 33 / 1);
 
-  --background-color: rgb(18 18 18 / 1);
+  --background-color: rgb(20 20 33 / 1);
   --primary-color: rgb(20 200 20 / 1);
   --secondary-color: rgb(98, 0, 163);
   
-  --index-background-color: rgb(0 0 0 / 1);
-  --rubik-background-color: rgb(0 0 0 / 1);
-  --algorithm-background-color: rgb(0 0 0 / 1);
+  --index-background-color: rgb(4 0 33 / 1);
+  --button-group-background-color: rgb(4 0 33 / 1);
+  --rubik-background-color: rgb(4 0 33 / 1);
+  --algorithm-background-color: rgb(4 0 33 / 1);
   --load-more-background-color: rgb(48 48 48 / 0.5);
 
   --button-state-notlearn: rgba(0 0 0 / 0.5);

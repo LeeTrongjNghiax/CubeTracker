@@ -1,7 +1,7 @@
 let dates = [];
 let sql = `INSERT INTO image VALUES \n`;
 let sql2 = `INSERT INTO algorithm (id, userId, imageId, content, note) VALUES \n`;
-let orders = ['1', '4', '2', '5', '3', '6', '0'];
+// let orders = ['1', '4', '2', '5', '3', '6', '0'];
 let algAndImg = [
   {
     content: '455000000501005550303303330111111110200222220666666000',
@@ -11,7 +11,7 @@ let algAndImg = [
       "M' U R U' r'", 
       "y2 U L U' L'", 
     ],
-    note: "F2L 1"
+    note: "F2L 01"
   },
   {
     content: '403300000555005550301003330111111110200222220666666000',
@@ -21,7 +21,7 @@ let algAndImg = [
       "y' U' R' U R", 
       "r U R' U' M", 
     ],
-    note: "F2L 2"
+    note: "F2L 02"
   },
   {
     content: '405003000501005550303003330111111110200222220666666050',
@@ -31,7 +31,7 @@ let algAndImg = [
       "y' R' U' R", 
       "U M R U' R' U M'", 
     ],
-    note: "F2L 3"
+    note: "F2L 03"
   },
   {
     content: '403000050505005550301003330111111110230222220666666000',
@@ -40,7 +40,7 @@ let algAndImg = [
       "y2 L U L'", 
       "y F U F'", 
     ],
-    note: "F2L 4"
+    note: "F2L 04"
   },
   {
     content: '405000050501005550303003330111111110230222220666666000',
@@ -50,7 +50,7 @@ let algAndImg = [
       "F2 L' U' L U F2", 
       "U' R U R' U R' F R F'", 
     ],
-    note: "F2L 5"
+    note: "F2L 05"
   },
   {
     content: '403003000505005550301003330111111110200222220666666050',
@@ -60,7 +60,7 @@ let algAndImg = [
       "U' r U' R' U R U r'", 
       "U F' U' F U2 F' U F", 
     ],
-    note: "F2L 6"
+    note: "F2L 06"
   },
   {
     content: '405005000501005550303003330111111110200222220666666030',
@@ -70,7 +70,7 @@ let algAndImg = [
       "U' R U2 R' U R' F R F'", 
       "M' U' M U2 r U' r'",   
     ],
-    note: "F2L 7"
+    note: "F2L 07"
   },
   {
     content: '403000030505005550301003330111111110250222220666666000',
@@ -80,7 +80,7 @@ let algAndImg = [
       "y U L' U2 L U2 L' U L", 
       "U F' U2 F U2 F' U F", 
     ],
-    note: "F2L 8"
+    note: "F2L 08"
   },
   {
     content: '405000030501005550303003330111111110250222220666666000',
@@ -90,7 +90,7 @@ let algAndImg = [
       "F R U R' U' F' R U' R'", 
       "y' U R' U' R U' R' U' R", 
     ],
-    note: "F2L 9"
+    note: "F2L 09"
   },
   {
     content: '403005000505005550301003330111111110200222220666666030',
@@ -537,17 +537,17 @@ let algAndImg = [
   },
 ]
 
-for (let i = 0; i < 57; i++) {
-  let d = randomDate(new Date('2001-04-02 08:00:00'), new Date('2001-07-01 20:00:00'));
+for (let i = 0; i < 41; i++) {
+  let d = randomDate(new Date('2000-01-01 08:00:00'), new Date('2000-03-01 20:00:00'));
   dates.push( d.date );
 }
 dates = dates.sort();
 
-for (let i = 0; i < 57; i++)
+for (let i = 0; i < 41; i++)
   dates[i] = new Date(dates[i]);
 
-for (let i = 0; i < algAndImg.length; i++)
-  sql += `( "img${dates[i].toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "${ changeImage( algAndImg[i].content, orders )}" ),\n`
+for (let i = 0; i < 41; i++)
+  sql += `( "img${dates[i].toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}", "${ algAndImg[i].content }" ),\n`
 
 for (let i = 0; i < algAndImg.length; i++)
   for (let j = 0; j < algAndImg[i].algorithms.length; j++) {

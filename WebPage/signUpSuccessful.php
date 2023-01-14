@@ -13,42 +13,35 @@
   <link rel="stylesheet" href="../CSS/F2L.css">
   <link rel="stylesheet" href="../CSS/footer.css">
 
-  <script src='../JS/eventListener.js' defer></script>
+  <style>
+    article {
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: stretch;
+    }
+  </style>
+
   <script src='../JS/functions.js'></script>
 
   <title>F2L</title>
 </head>
 <body>
-  
+
   <?php include '../connect.php' ?>
-  <?php include '../DAO/Algorithm_DAO.php' ?>
-  <?php include '../DAO/Image_DAO.php' ?>
-  <?php include 'DynamicPage/function.php' ?>
   <?php include 'DynamicPage/header.php' ?>
-  <?php $tag = "F2L" ?>
-  
+  <?php include '../DAO/User_DAO.php' ?>
+
   <main>
-    <h1>F2L Algorithms</h1>
+    <h1>Thank you for joining our page!</h1>
     <article>
-    
-  </article>
+      <p>You can leave this page now</p>
+      <br>
+    </article>
   </main>
     
-  <?php include "DynamicPage/loadAlgorithms.php" ?>
   <?php include "DynamicPage/footer.php" ?>
-
-  <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $result = getImageByContent($conn, $_POST['image']);
-
-      if ( !empty($result) ) { 
-        $date = date('siHdmY');
-        addAlgorithm($conn, $date, 'u45121201012002', $result['id'], $_POST['algorithm']);
-      } else {
-        echo '<script>alert("Image does not exists");</script>';
-      }
-    }
-  ?>
 
 </body>
 

@@ -29,6 +29,7 @@ main {
 }
 
 article {
+  width: 100vw;
   display: grid;
   grid-template-columns: 1fr 1fr;
   counter-reset: no;
@@ -80,7 +81,7 @@ section .img .btnGroup {
   align-items: center;
   justify-content: space-around;
   --background-color: rgb(0 0 0 / 1);
-  background-color: var(--background-color);
+  background-color: var(--button-group-background-color);
 }
 
 section .img .btnGroup button {
@@ -103,18 +104,35 @@ section .algorithms {
 section .algorithms .algorithm-row {
   width: 100%;
   display: grid;
-  grid-template-columns: 26fr 3fr 3fr 8fr;
+  grid-template-columns: 26fr 5fr 5fr 5fr;
   column-gap: 0.5rem;
   align-items: center;
   justify-items: center;
   background-color: var(--algorithm-background-color);
 }
 
-section .algorithms .loadMore {
+section .algorithms .algorithm-row[data-display=hide] {
+  display: none;
+}
+
+section .algorithms .algorithm-row[data-display=show] {
+  display: grid;
+}
+
+input {
+  background-color: var(--algorithm-background-color);
+  border: 0.25rem solid rgb(0 0 200);
+}
+
+section .algorithms .algorithm-row:nth-last-child(2) {
+  grid-template-columns: 20fr 15fr;
+}
+
+section .algorithms .algorithm-row:last-child {
   width: 90%;
   text-align: center;
+  grid-template-columns: 1fr;
   background-color: var(--algorithm-background-color);
-  padding: 0.5rem;
   margin: 1rem;
   transition: background-color 0.25s;
 }
@@ -141,13 +159,17 @@ section .algorithms .algorithm-row .vote {
   background-color: var(--algorithm-background-color);
 }
 
-section .algorithms .algorithm-row .gen {
+section .algorithms .algorithm-row a {
   background-color: var(--algorithm-background-color);
 }
 
 section .algorithms .algorithm-row button {
   padding: 0.5rem;
   margin: 0.5rem;
+}
+
+section .algorithms .algorithm-row button.submit {
+  background-color: rgb(0 200 0 / 1);
 }
 
 section .algorithms .algorithm-row button[data-state]::before {

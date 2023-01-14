@@ -1,3 +1,19 @@
+function createCookie(name, value, days) {
+  var expires;
+    
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toGMTString();
+  }
+  else {
+    expires = "";
+  }
+    
+  document.cookie = escape(name) + "=" + 
+    escape(value) + expires + "; path=/";
+}
+
 numberToColor = (num) => {
   switch (parseInt(num)) {
     case 1: return 'white';
@@ -310,6 +326,23 @@ rotate = (e, direction) => {
   let result = turn(content, direction);
 
   changeSvg(e, result, state, result);
+
+  if (e.parentElement.parentElement.dataset.rotateCount == 3) 
+    e.parentElement.parentElement.dataset.rotateCount = "0";
+  else 
+    e.parentElement.parentElement.dataset.rotateCount = parseInt( e.parentElement.parentElement.dataset.rotateCount ) + 1;
+
+  switch (e.parentElement.parentElement.dataset.rotateCount) {
+    case "0": 
+
+      break;
+    case "1": 
+      break;
+    case "2": 
+      break;
+    case "3": 
+      break;
+  }
 }
 
 reset = e => {
@@ -339,4 +372,120 @@ changeSvg = (e, string, state, currentState) => {
   else 
     e.parentElement.parentElement.insertAdjacentHTML( 'afterbegin', stringImageTo2DImage(string) );
   e.parentElement.parentElement.dataset.currentState = currentState;
+}
+
+const patternChecks = {
+  f2l: [
+    [27, 28, 30, 32, 34, 35],
+    [45, 48],
+    [36, 41],
+    [9, 12, 13, 14],
+    [18, 19, 25, 26]
+  ],
+  oll: [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    [9, 12, 13, 14, 15, 16],
+    [18, 19, 23, 24, 25, 26],
+    [27, 28, 29, 30, 31, 32, 33, 34, 35],
+    [36, 39, 40, 41, 42, 43],
+    [45, 46, 47, 48, 49, 50]
+  ],
+  pll: [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    [9, 10, 11, 12, 13, 14, 15, 16, 17],
+    [18, 19, 20, 21, 22, 23, 24, 25, 26],
+    [27, 28, 29, 30, 31, 32, 33, 34, 35],
+    [36, 37, 38, 39, 40, 41, 42, 43, 44],
+    [45, 46, 47, 48, 49, 50, 51, 52, 53]
+  ]
+}
+
+submit = (e) => {
+  let result;
+
+  switch (document.querySelector("h1").innerHTML.match(/\w+\b/)[0]) {
+    case "F2L":
+      console.log("lmao");
+      result = 
+        checkAlgorithm( 
+          turn(
+            e.parentElement.parentElement.parentElement.querySelector(".img").dataset.currentState, 
+            e.parentElement.querySelector("input").value
+          ), 
+          patternChecks.f2l
+        )
+      break;
+    case "OLL":
+      result = 
+        checkAlgorithm( 
+          turn(
+            e.parentElement.parentElement.parentElement.querySelector(".img").dataset.currentState, 
+            e.parentElement.querySelector("input").value
+          ), 
+          patternChecks.oll
+        )
+      break;
+    case "PLL":
+      result = 
+        checkAlgorithm( 
+          turn(
+            e.parentElement.parentElement.parentElement.querySelector(".img").dataset.currentState, 
+            e.parentElement.querySelector("input").value
+          ), 
+          patternChecks.pll
+        )
+      break;
+  }
+
+  if (!result) {
+    alert("This algorithm does not solve this rubik's cube case");
+    return;
+  } else {
+    alert("faejvbn");
+    let date = new Date();
+
+    let a = document.createElement("a");
+    a.setAttribute(`href`, 
+      `Redirect/submitAlgorithm.php?
+        image=${e.parentElement.parentElement.parentElement.querySelector(".img").dataset.currentState}&
+        algorithm=${e.parentElement.querySelector("input").value}&
+        date=${date.toISOString().slice(0, 19).replace(/(T|-| |:)/g, "")}`);
+    document.body.appendChild(a);
+    a.click();
+  }
+}
+
+let solvedF2lPatternCheck = [
+  [27, 28, 30, 32, 34, 35],
+  [45, 48],
+  [36, 41],
+  [9, 12, 13, 14],
+  [18, 19, 25, 26]
+]
+
+let solvedOllPatternCheck = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  [9, 12, 13, 14, 15, 16],
+  [18, 19, 23, 24, 25, 26],
+  [27, 28, 29, 30, 31, 32, 33, 34, 35],
+  [36, 39, 40, 41, 42, 43],
+  [45, 46, 47, 48, 49, 50]
+]
+
+let solvedPllPatternCheck = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  [9, 10, 11, 12, 13, 14, 15, 16, 17],
+  [18, 19, 20, 21, 22, 23, 24, 25, 26],
+  [27, 28, 29, 30, 31, 32, 33, 34, 35],
+  [36, 37, 38, 39, 40, 41, 42, 43, 44],
+  [45, 46, 47, 48, 49, 50, 51, 52, 53]
+]
+
+checkAlgorithm = (algorithm, patternCheck) => {
+  alert(algorithm);
+  for (let i = 0; i < patternCheck.length; i++)
+    for (let j = 1; j < patternCheck[i].length; j++)
+      if (algorithm[ patternCheck[i][j] ] != algorithm[ patternCheck[i][0] ]) return false;
+
+  return true;
 }
