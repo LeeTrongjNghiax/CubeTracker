@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" style="--z:0deg; --y:0deg; --x:0deg;">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../CSS/globalVar.css">
+
+  <style>
+    :root {
+      --container-length: 300px;
+      --box-length: 200px;
+      --x: 0deg;
+      --y: 0deg;
+      --z: 0deg;
+    }
+    * {
+        margin    : 0;
+        padding   : 0;
+        box-sizing: border-box;
+        color: white;
+    }
+
+    body {
+        width          : 100%;
+        min-height     : 90vh;
+        background     : rgb(18 18 18);
+        overflow       : hidden;
+        display        : flex;
+        flex-direction : column;
+        align-items    : center;
+        justify-content: center;
+    }
+
+    .container {
+        width           : 100vh;
+        height          : 80vh;
+        display         : flex;
+        align-items     : center;
+        justify-content : center;
+    }
+
+    .rubikCube {
+        width           : 100%;
+        height          : 80%;
+        display         : flex;
+        align-items     : center;
+        justify-content : center;
+        perspective     : 10000px;
+        transform-style : preserve-3d;
+        transform-origin: center center center;
+        transform       : rotateY(45deg) rotateX(-45deg) rotateZ(-45deg) rotateX(30deg);
+    }
+
+    .box {
+        position       : absolute;
+        width          : var(--box-length);
+        height         : var(--box-length);
+        transform-style: preserve-3d;
+        transition     : all 1s ease-out;
+        transform-origin: 50% 50% 20%;
+    }
+
+    .box div {
+        position             : absolute;
+        width                : var(--box-length);
+        height               : var(--box-length);
+        border: 1px solid black;
+        transform-origin: 50% 50% 20%;
+    }
+    
+    .box.UFR::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        content: '';
+        background-color: #f0f;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .box.UFR {
+        transform: translateY(calc(-1 * var(--box-length))) translateX(calc(1 * var(--box-length))) translateZ(calc(1 * var(--box-length))) ;
+    }
+
+    .top {
+        bottom    : calc(var(--box-length) / 2);
+        transform : rotateX(90deg);
+        background: var(--rubik-white-color);
+    }
+
+    .bottom {
+        top       : calc(var(--box-length) / 2);
+        transform : rotateX(-90deg);
+        background: var(--rubik-yellow-color);
+    }
+
+    .left {
+        right     : calc(var(--box-length) / 2);
+        transform : rotateY(-90deg);
+        background: var(--rubik-orange-color);
+    }
+
+    .right {
+        left      : calc(var(--box-length) / 2);
+        transform : rotateY(90deg);
+        background: var(--rubik-red-color);
+    }
+
+    .front {
+        transform : translateZ( calc(var(--box-length) / 2) );
+        background: var(--rubik-green-color);
+    }
+
+    .back {
+        transform : translateZ( calc(-1 * var(--box-length) / 2) );
+        background: var(--rubik-blue-color);
+    }
+
+    .black {
+        background: rgb(0 0 0 / 0.5);
+    }
+  </style>
+
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <div class="rubikCube">
+      <div class="box center">
+        <div class="top black"></div>
+        <div class="bottom black"></div>
+        <div class="left black"></div>
+        <div class="right black"></div>
+        <div class="front black"></div>
+        <div class="back black"></div>
+      </div>
+      <!-- <div class="box U">
+        <div class="top"></div>
+        <div class="bottom black"></div>
+        <div class="left black"></div>
+        <div class="right black"></div>
+        <div class="front black"></div>
+        <div class="back black"></div>
+      </div>
+      <div class="box UR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box R">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box D">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box L">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box UL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+  
+  
+      <div class="box F">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front black"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box UF">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div> -->
+      <div class="box UFR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <!-- <div class="box FR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DFR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DF">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DFL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box FL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box UFL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+  
+  
+      <div class="box B">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box UB">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box UBR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box BR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DBR">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DB">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box DBL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box BL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="box UBL">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="front"></div>
+        <div class="back"></div>
+      </div> -->
+    </div>
+  </div>
+  <div class="controller">
+    <div class="inp">
+      <label for="rotateX">X</label>
+      <input id="rotateX" type="range" value="0" min="-360" max="360" step="45">
+    </div>
+    <div class="inp">
+      <label for="rotateY">Y</label>
+      <input id="rotateY" type="range" value="0" min="-360" max="360" step="45">
+    </div>
+    <div class="inp">
+      <label for="rotateZ">Z</label>
+      <input id="rotateZ" type="range" value="0" min="-360" max="360" step="45">
+    </div>
+    <div class="inp">
+      <label for="originX">Origin X</label>
+      <input id="originX" type="range" value="0" min="-500" max="500" step="50">
+    </div>
+    <div class="inp">
+      <label for="originY">Origin Y</label>
+      <input id="originY" type="range" value="0" min="-500" max="500" step="50">
+    </div>
+    <div class="inp">
+      <label for="originZ">Origin Z</label>
+      <input id="originZ" type="range" value="0" min="-500" max="500" step="50">
+    </div>
+  </div>
+
+  <script>
+    let originX = 500;
+    let originY = 500;
+    let originZ = 500;
+    document.querySelector(".box.UFR").style.transformOrigin = `${originX}% ${originY}% ${originZ}%`;
+
+    document.querySelector("#rotateX").addEventListener("change", () => {
+      document.querySelector(".UFR").style.transform 
+        += `rotateX(${document.querySelector("#rotateX").value}deg)`;
+      document.documentElement.style.setProperty('--x', `${document.querySelector("#rotateX").value}deg`);
+    });
+    document.querySelector("#rotateY").addEventListener("change", () => {
+      document.querySelector(".UFR").style.transform 
+        += `rotateY(${document.querySelector("#rotateY").value}deg)`;
+      document.documentElement.style.setProperty('--y', `${document.querySelector("#rotateY").value}deg`);
+    });
+    document.querySelector("#rotateZ").addEventListener("change", () => {
+      document.querySelector(".UFR").style.transform 
+        += `rotateZ(${document.querySelector("#rotateZ").value}deg)`;
+      document.documentElement.style.setProperty('--z', `${document.querySelector("#rotateZ").value}deg`);
+    });
+    document.querySelector("#originX").addEventListener("change", () => {
+      console.log("lmao");
+      document.querySelector(".box.UFR").style.transformOrigin 
+        = `${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`;
+    });
+    document.querySelector("#originY").addEventListener("change", () => {
+      console.log("lmao");
+      document.querySelector(".box.UFR").style.transformOrigin 
+        = `${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`;
+    });
+    document.querySelector("#originZ").addEventListener("change", () => {
+      console.log(`${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`);
+      console.log();
+      document.querySelector(".box.UFR").style.transformOrigin 
+        = `${document.querySelector("#originX").value}% ${document.querySelector("#originY").value}% ${document.querySelector("#originZ").value}%`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+footer {
+  width: 100%;
+}
+
+footer nav {
+  width: 100%;
+}
+
+footer nav ul {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  list-style-type: none;
+  background-color: var(--footer-background-color);
+}
+
+footer nav ul li {
+  margin: 1rem 0 1rem 0;
+}
+
+footer nav ul li a {
+  padding: 1rem;
+  background-color: var(--footer-background-color);
+}
+
+@media (width <= 1550px) {
+  footer nav ul li a {
+    font-size: 0.75rem;
+  }
+}
