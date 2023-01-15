@@ -489,3 +489,7 @@ checkAlgorithm = (algorithm, patternCheck) => {
 
   return true;
 }
+
+showFromMilliSecond = (str) => str.slice(9);
+showFromSecond = (str) => str.slice(6);
+showFromMinute = (str) => str.slice(3);

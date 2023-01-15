@@ -40,7 +40,7 @@ CREATE TABLE algorithmrecord (
   id char(17) NOT NULL,
   userId char(15) NOT NULL,
   algorithmId char(17) NOT NULL,
-  time time NOT NULL,
+  time time(2) NOT NULL,
   KEY id (id),
   KEY userId (userId),
   KEY algorithmId (algorithmId),

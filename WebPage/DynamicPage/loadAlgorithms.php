@@ -26,7 +26,7 @@
         <p class="algorithm">${element.algorithms[i].algorithm}</p>
         <p class="vote">${element.algorithms[i].votes}</p>
         <button data-state="Not Learned" onclick="changeState(this)"></button>
-        <a href="AlgorithmTimer.php?algorithm=${element.algorithms[i].algorithm}&image=${element.content}">Timer</a>
+        <a href="AlgorithmTimer.php?user=u45121201012002&algorithm=${element.algorithms[i].algorithm}&image=${element.content}&date=null&record=null">Timer</a>
       </div>`;
     }
 
