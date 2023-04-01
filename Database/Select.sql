@@ -34,16 +34,21 @@ CONCAT(
     ), id
   ), "', 'OLL'),"
 ) 
-AS lmao FROM `algorithm` WHERE 1
+AS lmao FROM algorithm WHERE 1
 
-SELECT * FROM algorithm alg JOIN image img
-ON img.id = alg.imageId WHERE img.content = '400000000500335550350003331111111115200222220666666000';
+-- AVG
 
-DELETE FROM algorithm WHERE id IN (
-  'alg02170309012023',
-  'alg04140309012023',
-  'alg19100309012023',
-  'alg25170309012023',
-  'alg44100309012023',
-  'alg55100309012023'
-)
+SELECT AVG(allTime.time) AS 'ao' FROM (
+  SELECT time FROM algorithmrecord WHERE time NOT IN (
+    ( 
+      SELECT MAX(time) FROM algorithmrecord WHERE algorithmid = 'alg20010501061953' 
+    ), 
+    ( 
+      SELECT MIN(time) FROM algorithmrecord WHERE algorithmid = 'alg20010501061953' 
+    )
+  ) AND algorithmid = 'alg20010501061953' LIMIT 5
+) allTime
+
+-- MEAN
+
+SELECT AVG(time) AS 'mean' FROM algorithmrecord WHERE algorithmid = 'alg20010501061953';

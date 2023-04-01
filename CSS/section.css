@@ -99,6 +99,8 @@ section .algorithms {
   justify-items: center;
   background-color: var(--algorithm-background-color);
   counter-reset: lmao;
+  max-height: auto;
+  overflow-y: scroll;
 }
 
 section .algorithms .algorithm-row {
@@ -122,19 +124,6 @@ section .algorithms .algorithm-row[data-display=show] {
 input {
   background-color: var(--algorithm-background-color);
   border: 0.25rem solid rgb(0 0 200);
-}
-
-section .algorithms .algorithm-row:nth-last-child(2) {
-  grid-template-columns: 20fr 15fr;
-}
-
-section .algorithms .algorithm-row:last-child {
-  width: 90%;
-  text-align: center;
-  grid-template-columns: 1fr;
-  background-color: var(--algorithm-background-color);
-  margin: 1rem;
-  transition: background-color 0.25s;
 }
 
 section .algorithms .loadMore:hover {

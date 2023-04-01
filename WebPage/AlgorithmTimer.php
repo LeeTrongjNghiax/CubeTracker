@@ -16,18 +16,23 @@
   <script src='../JS/functions.js'></script>
 
   <style>
+    * {
+      font-size: 15px;
+    }
+    main {
+      width: 100%;
+    }
     article {
+      width: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
     section {
-      width: 100vw;
+      width: 100%;
       display: grid;
-      grid-template-columns: 1fr 2fr 1fr;
-      grid-template-areas: 
-        "image alg timer"
-        "record record record";
+      grid-template-columns: auto 1fr auto;
     }
     #image, #algorithm, #timer {
       display: flex;
@@ -38,20 +43,17 @@
     #image {
       background-color: var(--algorithm-background-color);
     }
-
     #image svg {
-      width: 10rem;
-      height: 10rem;
+      width: 10vw;
+      height: 10vw;
       background-color: var(--background-color);
     }
-
     #image svg g {
       opacity: 1;
       stroke-width: 0;
       stroke-opacity: 0.5;
       stroke-linejoin: round;
     }
-
     #algorithm {
       background-color: var(--algorithm-background-color);
     }
@@ -59,8 +61,13 @@
       font-size: 2rem;
       background-color: var(--algorithm-background-color);
     }
+    #algorithm .algorithm {
+      padding: 0 1rem;
+      text-align: center;
+    }
     #timer {
       flex-direction: row;
+      padding: 4vw;
       background-color: var(--algorithm-background-color);
     }
     #timer .timer {
@@ -76,8 +83,32 @@
     #timer span:nth-child(2)::after {
       content: '.';
     }
+    #timerStatistic {
+      width: 100%;
+      display: block;
+      background-color: var(--algorithm-background-color);
+    }
+    #timerStatistic h1 {
+      background-color: var(--algorithm-background-color);
+    }
+    #timerStatistic div {
+      background-color: var(--algorithm-background-color);
+    }
+    #timerStatistic .timerStatistic {
+      display: flex;
+      justify-content: space-around;
+    }
+    #timerStatistic .timerStatistic div {
+      background-color: var(--algorithm-background-color);
+    }
+    #timerStatistic .timerStatistic div h2 {
+      font-weight: normal;
+      font-size: 2rem;
+      text-align: center;
+      background-color: var(--algorithm-background-color);
+    }
     #timerRecord {
-      grid-area: record;
+      display: block;
       background-color: var(--algorithm-background-color);
       width: 100%;
     }
@@ -95,7 +126,7 @@
       display: grid;
       width: 100%;
       text-align: center;
-      grid-template-columns: 1fr 3fr 3fr 1fr 1fr;
+      grid-template-columns: 2fr 6fr 6fr 3fr 3fr;
       align-items: space;
       justify-content: space-between;
       background-color: var(--algorithm-background-color);
@@ -116,8 +147,16 @@
     }
     #timerRecord .recordTable .row:not(:first-child) div.state {
       margin: auto 1rem;
-      background-color: green;
       border-radius: 2rem;
+    }
+    #timerRecord .recordTable .row:not(:first-child) div.state.completed {
+      background-color: green;
+    }
+    #timerRecord .recordTable .row:not(:first-child) div.state.plus2 {
+      background-color: orange;
+    }
+    #timerRecord .recordTable .row:not(:first-child) div.state.dnf {
+      background-color: red;
     }
     .ready {
       color: green;
@@ -151,19 +190,44 @@
             <span class="millisecond">00</span>
           </div>
         </div>
-        <div id="timerRecord">
-          <h1>Timer record</h1>
-          <div class="recordTable">
-            <div class="row">
-              <div class="no">Number</div>
-              <div class="date">Date</div>
-              <div class="record">Record</div>
-              <div class="state">State</div>
-              <div class="delete">Delete</div>
-            </div>
+      </section>
+      <section id="timerRecord" style="overflow-y: scroll; max-height: 30vh;">  
+        <h1>Timer record</h1>
+        <div class="recordTable">
+          <div class="row">
+            <div class="no">Number</div>
+            <div class="date">Date</div>
+            <div class="record">Record</div>
+            <div class="state">State</div>
+            <div class="delete">Delete</div>
           </div>
         </div>
       </section>
+      <section id="timerStatistic">
+        <h1>Timer Statistic</h1>
+        <div class="timerStatistic">
+          <div class="ao5-statistic">
+            <h2>AO5</h2>
+            <h2 class="ao5"></h2>
+          </div>
+          <div class="ao12-statistic">
+            <h2>AO12</h2>
+            <h2 class="ao12"></h2>
+          </div>
+          <div class="mo5-statistic">
+            <h2>MO5</h2>
+            <h2 class="mo5"></h2>
+          </div>
+          <div class="current-time-statistic">
+            <h2>Current Time</h2>
+            <h2 class="current-time"></h2>
+          </div>
+          <div class="best-time-statistic">
+            <h2>Best Time</h2>
+            <h2 class="best-time"></h2>
+          </div>
+        </div>
+      </section>  
     </article>
   </main>
 
@@ -232,12 +296,51 @@
             timerInterval = null;
             console.log(document.querySelector(".minute").innerHTML + " " + document.querySelector(".second").innerHTML + " " + document.querySelector(".millisecond").innerHTML);
             let a = document.createElement("a");
-            a.setAttribute("href", `<?php echo $_SERVER["PHP_SELF"] ?>?user=u45121201012002&algorithm=${algorithm}&image=${image}&date=<?= date('siHdmY'); ?>&record=00:${document.querySelector(".minute").innerHTML + ":" + document.querySelector(".second").innerHTML + "." + document.querySelector(".millisecond").innerHTML}`);
+            a.setAttribute("href", `
+              <?php echo $_SERVER["PHP_SELF"] ?>?
+              user=u45121201012002&
+              algorithm=${algorithm}&
+              image=${image}&
+              date=<?= date('YmdHis'); ?>&
+              record=00:${document.querySelector(".minute").innerHTML + ":"
+                         + document.querySelector(".second").innerHTML + "."
+                         + document.querySelector(".millisecond").innerHTML}
+            `);
             a.click();
           }
           break;
       }
     });
+
+    function deleteRecord(e) {
+      if (confirm("Do you want to delete this record?")) {
+        let a = document.createElement("a");
+        a.setAttribute("href", `
+          Redirect/deleteAlgorithmRecord.php?
+          id=${ e.parentElement.getAttribute("id") }&
+          user=u45121201012002&
+          algorithm=${algorithm}&
+          image=${image}
+        `);
+        a.click();
+      }
+    }
+
+    function changeRecordState(e) {
+      if (confirm("Do you want to change this record state?")) {
+        let a = document.createElement("a");
+        a.setAttribute("href", `
+          Redirect/changeRecordState.php?
+          id=${ e.parentElement.getAttribute("id") }&
+          state=${ e.innerHTML }&
+          user=u45121201012002&
+          algorithm=${algorithm}&
+          image=${image}
+        `);
+        a.click();
+      }
+    }
+
   </script>
     
   <?php include "DynamicPage/footer.php" ?>

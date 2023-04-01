@@ -41,7 +41,7 @@ CREATE TABLE algorithmrecord (
   userId char(15) NOT NULL,
   algorithmId char(17) NOT NULL,
   time time(2) NOT NULL,
-  KEY id (id),
+  PRIMARY KEY (id),
   KEY userId (userId),
   KEY algorithmId (algorithmId),
   CONSTRAINT record_ibfk_1 FOREIGN KEY (algorithmId) REFERENCES algorithm (id),

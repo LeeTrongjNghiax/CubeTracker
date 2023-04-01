@@ -26,7 +26,7 @@
         <p class="algorithm">${element.algorithms[i].algorithm}</p>
         <p class="vote">${element.algorithms[i].votes}</p>
         <button data-state="Not Learned" onclick="changeState(this)"></button>
-        <a href="AlgorithmTimer.php?user=u45121201012002&algorithm=${element.algorithms[i].algorithm}&image=${element.content}&date=null&record=null">Timer</a>
+        <a href="AlgorithmTimer.php?user=u45121201012002&algorithm=${element.algorithms[i].algorithm}&image=${element.content}&date=&record=">Timer</a>
       </div>`;
     }
 
@@ -56,9 +56,7 @@
             <input name="algorithm" type="text" pattern="[UDFBRLudfBrlMESxyz]['2]?(\\s[UDFBRLudfBrlMESxyz]['2]?)*" size=20>
             <input type="submit" class="submit" value="Submit Algorithm">
           </form>
-          <div class="algorithm-row">
-            Load More!
-          </div>
+          
         </div>
       </section>`
     )

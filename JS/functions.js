@@ -55,6 +55,17 @@ turn = (string, directions) => {
   return string;
 }
 
+/*
+
+
+
+━
+
+
+
+
+*/
+
 turnOne = (string, direction) => {
   const U_move = [
     [1, 7, 5, 3], 
