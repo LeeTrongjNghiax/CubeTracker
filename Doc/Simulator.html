@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="dark light">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../CSS/header.css">
+  <link rel="stylesheet" href="../CSS/footer.css">
+
+  <script>
+    numberToColor = (num) => {
+      switch (parseInt(num)) {
+        case 1: return 'white';
+        case 2: return 'green';
+        case 3: return 'red';
+        case 4: return 'yellow';
+        case 5: return 'blue';
+        case 6: return 'orange';
+        default: return 'gray';
+      }
+    }
+
+    changeRotationStatus = (string, position, count = 1) => {
+      let arr = string.split("");
+
+      for (let c = 0; c < count; c++)
+        arr[ position ] = (+arr[ position ] + 1) % 4;
+
+      return arr.join('');
+    }
+
+    multipleSeriesSwap = (string, positions, count = 1) => {
+      for (let c = 0; c < count; c++)
+        for (let i = 0; i < positions.length; i++)
+          string = seriesSwap(string, positions[i]);
+
+      return string;
+    }
+
+    seriesSwap = (string, positions) => {
+      let arr = string.split("");
+      let temp = arr[ positions[0] ];
+
+      for (let i = 0; i < positions.length - 1; i++)
+        arr[ positions[i] ] = arr[ positions[i + 1] ];
+
+      arr[ positions[ positions.length - 1 ] ] = temp;
+
+      return arr.join('');
+    }
+
+    turn = (string, directions) => {
+      let arr = directions.split(" ");
+
+      for (let i = 0; i < arr.length; i++) {
+        string = turnOne(string, arr[i]);
+      }
+
+      return string;
+    }
+
+    turnOne = (string, direction) => {
+      const FACE_TURN = [
+        [8, 6, 4, 2], 
+        [9, 7, 5, 3], 
+        [9, 5, 3, 7], 
+        [2, 6, 4, 8], 
+        [3, 7, 5, 9]
+      ];
+      const SLICE_TURN = [
+        [1, 1, 1, 1], 
+        [2, 6, 8, 4], 
+        [6, 2, 4, 8]
+      ];
+      const INNER_LAYER = [
+        [0, 4, 3, 1], // M
+        [1, 5, 4, 2], // E
+        [2, 3, 5, 0], // S_prime
+      ];
+      const OUTER_LAYER = [
+        [0, 2, 4, 5, 1], // U
+        [1, 0, 5, 3, 2], // F
+        [2, 1, 3, 4, 0], // R
+      ];
+
+      for (let i = 0; i < 3; i++) {
+        let arr = [];
+        arr.push( OUTER_LAYER[i][0] + 3 );
+        for (let j = 1; j < OUTER_LAYER[i].length; j++) {
+          let sign = (j % 2 == 0) ? -1 : 1;
+          arr.push( OUTER_LAYER[i][ j + sign ] );
+        }
+        OUTER_LAYER.push(arr);
+      }
+
+      let moves = [];
+
+      for (let i = 0; i < OUTER_LAYER.length; i++) {
+        let layerMove = [];
+        for (let j = 0; j < 2; j++) {
+          layerMove.push(
+            FACE_TURN[j].map(
+              x => x + 10 * OUTER_LAYER[i][0]
+            )
+          );
+        }
+        for (let j = 2; j < 5; j++) {
+          layerMove.push(
+            FACE_TURN[j].map(
+              (x, k) => x + 10 * OUTER_LAYER[i][k + 1]
+            )
+          );
+        }
+        moves.push(layerMove);
+      }
+
+      for (let i = 0; i < INNER_LAYER.length; i++) {
+        let sliceMove = [];
+        for (let j = 0; j < SLICE_TURN.length; j++) {
+          sliceMove.push(
+            SLICE_TURN[j].map(
+              (x, k) => x + 10 * INNER_LAYER[i][k]
+            )
+          );
+        }
+        moves.push(sliceMove);
+      }
+
+      let prime_moves = [];
+
+      for (let i = 0; i < moves.length; i++) {
+        prime_moves.push(
+          moves[i].map( arr => JSON.parse( JSON.stringify(arr) ).reverse() )
+        );
+      };
+
+      let temp = JSON.parse( JSON.stringify( moves[8] ));
+      moves[8] = JSON.parse( JSON.stringify( prime_moves[8] ));
+      prime_moves[8] = JSON.parse( JSON.stringify( temp ));
+
+      switch (direction) {
+        case "U": string = multipleSeriesSwap(string, moves[0]); string = changeRotationStatus(string, 00); break;
+        case "D": string = multipleSeriesSwap(string, moves[3]); string = changeRotationStatus(string, 30); break;
+        case "F": string = multipleSeriesSwap(string, moves[1]); string = changeRotationStatus(string, 10); break;
+        case "B": string = multipleSeriesSwap(string, moves[4]); string = changeRotationStatus(string, 40); break;
+        case "R": string = multipleSeriesSwap(string, moves[2]); string = changeRotationStatus(string, 20); break;
+        case "L": string = multipleSeriesSwap(string, moves[5]); string = changeRotationStatus(string, 50); break;
+
+        case "U'": string = multipleSeriesSwap(string, moves[0], 3); string = changeRotationStatus(string, 00, 3); break;
+        case "D'": string = multipleSeriesSwap(string, moves[3], 3); string = changeRotationStatus(string, 30, 3); break;
+        case "F'": string = multipleSeriesSwap(string, moves[1], 3); string = changeRotationStatus(string, 10, 3); break;
+        case "B'": string = multipleSeriesSwap(string, moves[4], 3); string = changeRotationStatus(string, 40, 3); break;
+        case "R'": string = multipleSeriesSwap(string, moves[2], 3); string = changeRotationStatus(string, 20, 3); break;
+        case "L'": string = multipleSeriesSwap(string, moves[5], 3); string = changeRotationStatus(string, 50, 3); break;
+
+        case "U2": string = multipleSeriesSwap(string, moves[0], 2); string = changeRotationStatus(string, 00, 2); break;
+        case "D2": string = multipleSeriesSwap(string, moves[3], 2); string = changeRotationStatus(string, 30, 2); break;
+        case "F2": string = multipleSeriesSwap(string, moves[1], 2); string = changeRotationStatus(string, 10, 2); break;
+        case "B2": string = multipleSeriesSwap(string, moves[4], 2); string = changeRotationStatus(string, 40, 2); break;
+        case "R2": string = multipleSeriesSwap(string, moves[2], 2); string = changeRotationStatus(string, 20, 2); break;
+        case "L2": string = multipleSeriesSwap(string, moves[5], 2); string = changeRotationStatus(string, 50, 2); break;
+
+
+
+        case "u": string = multipleSeriesSwap(string, moves[0]); string = multipleSeriesSwap(string, moves[7], 3); string = changeRotationStatus(string, 00); break;
+        case "d": string = multipleSeriesSwap(string, moves[3]); string = multipleSeriesSwap(string, moves[7], 1); string = changeRotationStatus(string, 30); break;
+        case "f": string = multipleSeriesSwap(string, moves[1]); string = multipleSeriesSwap(string, moves[8], 1); string = changeRotationStatus(string, 10); break;
+        case "b": string = multipleSeriesSwap(string, moves[4]); string = multipleSeriesSwap(string, moves[8], 3); string = changeRotationStatus(string, 40); break;
+        case "r": string = multipleSeriesSwap(string, moves[2]); string = multipleSeriesSwap(string, moves[6], 3); string = changeRotationStatus(string, 20); break;
+        case "l": string = multipleSeriesSwap(string, moves[5]); string = multipleSeriesSwap(string, moves[6], 1); string = changeRotationStatus(string, 50); break;
+
+        case "u'": string = multipleSeriesSwap(string, moves[0], 3); string = multipleSeriesSwap(string, moves[7], 1); string = changeRotationStatus(string, 00, 3); break;
+        case "d'": string = multipleSeriesSwap(string, moves[3], 3); string = multipleSeriesSwap(string, moves[7], 3); string = changeRotationStatus(string, 30, 3); break;
+        case "f'": string = multipleSeriesSwap(string, moves[1], 3); string = multipleSeriesSwap(string, moves[8], 3); string = changeRotationStatus(string, 10, 3); break;
+        case "b'": string = multipleSeriesSwap(string, moves[4], 3); string = multipleSeriesSwap(string, moves[8], 1); string = changeRotationStatus(string, 40, 3); break;
+        case "r'": string = multipleSeriesSwap(string, moves[2], 3); string = multipleSeriesSwap(string, moves[6], 1); string = changeRotationStatus(string, 20, 3); break;
+        case "l'": string = multipleSeriesSwap(string, moves[5], 3); string = multipleSeriesSwap(string, moves[6], 3); string = changeRotationStatus(string, 50, 3); break;
+
+        case "u2": string = multipleSeriesSwap(string, moves[0], 2); string = multipleSeriesSwap(string, moves[7], 2); string = changeRotationStatus(string, 00, 2); break;
+        case "d2": string = multipleSeriesSwap(string, moves[3], 2); string = multipleSeriesSwap(string, moves[7], 2); string = changeRotationStatus(string, 30, 2); break;
+        case "f2": string = multipleSeriesSwap(string, moves[1], 2); string = multipleSeriesSwap(string, moves[8], 2); string = changeRotationStatus(string, 10, 2); break;
+        case "b2": string = multipleSeriesSwap(string, moves[4], 2); string = multipleSeriesSwap(string, moves[8], 2); string = changeRotationStatus(string, 40, 2); break;
+        case "r2": string = multipleSeriesSwap(string, moves[2], 2); string = multipleSeriesSwap(string, moves[6], 2); string = changeRotationStatus(string, 20, 2); break;
+        case "l2": string = multipleSeriesSwap(string, moves[5], 2); string = multipleSeriesSwap(string, moves[6], 2); string = changeRotationStatus(string, 50, 2); break;
+
+
+        
+        case "M": string = multipleSeriesSwap(string, moves[6]); break;
+        case "E": string = multipleSeriesSwap(string, moves[7]); break;
+        case "S": string = multipleSeriesSwap(string, moves[8]); break;
+
+        case "M'": string = multipleSeriesSwap(string, moves[6], 3); break;
+        case "E'": string = multipleSeriesSwap(string, moves[7], 3); break;
+        case "S'": string = multipleSeriesSwap(string, moves[8], 3); break;
+        
+        case "M2": string = multipleSeriesSwap(string, moves[6], 2); break;
+        case "E2": string = multipleSeriesSwap(string, moves[7], 2); break;
+        case "S2": string = multipleSeriesSwap(string, moves[8], 2); break;
+        
+
+
+        case "x": string = multipleSeriesSwap(string, moves[2]); string = multipleSeriesSwap(string, moves[6], 3); string = multipleSeriesSwap(string, moves[5], 3); break;
+        case "y": string = multipleSeriesSwap(string, moves[0]); string = multipleSeriesSwap(string, moves[7], 3); string = multipleSeriesSwap(string, moves[3], 3); break;
+        case "z": string = multipleSeriesSwap(string, moves[1]); string = multipleSeriesSwap(string, moves[8], 1); string = multipleSeriesSwap(string, moves[4], 3); break;
+
+        case "x'": string = multipleSeriesSwap(string, moves[2], 3); string = multipleSeriesSwap(string, moves[6], 1); string = multipleSeriesSwap(string, moves[5]); break;
+        case "y'": string = multipleSeriesSwap(string, moves[0], 3); string = multipleSeriesSwap(string, moves[7], 1); string = multipleSeriesSwap(string, moves[3]); break;
+        case "z'": string = multipleSeriesSwap(string, moves[1], 3); string = multipleSeriesSwap(string, moves[8], 3); string = multipleSeriesSwap(string, moves[4]); break;
+
+        case "x2": string = multipleSeriesSwap(string, moves[2], 2); string = multipleSeriesSwap(string, moves[6], 2); string = multipleSeriesSwap(string, moves[5], 2); break;
+        case "y2": string = multipleSeriesSwap(string, moves[0], 2); string = multipleSeriesSwap(string, moves[7], 2); string = multipleSeriesSwap(string, moves[3], 2); break;
+        case "z2": string = multipleSeriesSwap(string, moves[1], 2); string = multipleSeriesSwap(string, moves[8], 2); string = multipleSeriesSwap(string, moves[4], 2); break;
+      }
+
+      return string;
+    }
+
+    stringImageTo3DImage = (string) => `
+      <svg viewBox='-0.9 -0.9 1.8 1.8' class="rubik3d">
+        <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>
+        <g>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(5, 6))}-color)' stroke='#000000' points='-4.94395492722E-17,-0.747570645647 0.195987546512,-0.662774614696 -1.69795801266E-17,-0.571237209618 -0.195987546512,-0.662774614696'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(6, 7))}-color)' stroke='#000000' points='0.232005309244,-0.646547084507 0.443574072948,-0.555009679429 0.248231527177,-0.455893701578 0.0360177627316,-0.555009679429'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(7, 8))}-color)' stroke='#000000' points='0.482583855536,-0.537431994052 0.711668838657,-0.4383160162 0.517783415392,-0.330639653666 0.287241309765,-0.4383160162'/>
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(4, 5))}-color)' stroke='#000000' points='-0.232005309244,-0.646547084507 -0.0360177627316,-0.555009679429 -0.248231527177,-0.455893701578 -0.443574072948,-0.555009679429'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(1, 2))}-color)' stroke='#000000' points='-1.19067117689E-17,-0.537431994052 0.212213764446,-0.4383160162 1.31258271398E-17,-0.330639653666 -0.212213764446,-0.4383160162'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(8, 9))}-color)' stroke='#000000' points='0.251353447717,-0.419212035245 0.481895553344,-0.311535672712 0.270508995897,-0.19413986641 0.039139683271,-0.311535672712'/>
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(3, 4))}-color)' stroke='#000000' points='-0.482583855536,-0.537431994052 -0.287241309765,-0.4383160162 -0.517783415392,-0.330639653666 -0.711668838657,-0.4383160162'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(2, 3))}-color)' stroke='#000000' points='-0.251353447717,-0.419212035245 -0.039139683271,-0.311535672712 -0.270508995897,-0.19413986641 -0.481895553344,-0.311535672712'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(9, 10))}-color)' stroke='#000000' points='1.92197429271E-17,-0.290697160276 0.231369312626,-0.173301353974 6.32515829415E-17,-0.0448079088972 -0.231369312626,-0.173301353974'/>
+
+
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(29, 30))}-color)' stroke='#000000' points='0.0195723118985,-0.0109626610455 0.250941624524,-0.139456106122 0.241391846748,0.126727563228 0.0195723118985,0.261716201016'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(22, 23))}-color)' stroke='#000000' points='0.289305344891,-0.161716522847 0.500691902338,-0.279112329149 0.48317508531,-0.0193241313 0.279755567114,0.104467146503'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(23, 24))}-color)' stroke='#000000' points='0.535862871621,-0.299523577255 0.729748294886,-0.407199939789 0.705563815696,-0.153667051647 0.518346054594,-0.0397353794067'/>
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(28, 29))}-color)' stroke='#000000' points='0.0187964861684,0.30740091162 0.240616021018,0.172412273832 0.23182332941,0.417493465286 0.0187964861684,0.557525119942'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(21, 22))}-color)' stroke='#000000' points='0.277484981547,0.149131684797 0.480904499743,0.0253404069942 0.464720974424,0.265354838312 0.26869228994,0.394212876251'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(24, 25))}-color)' stroke='#000000' points='0.514822720476,0.00392025149203 0.702040481578,-0.110011420748 0.679626178607,0.124964198255 0.498639195158,0.24393468281'/>
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(27, 28))}-color)' stroke='#000000' points='0.0180798211904,0.599570709585 0.231106664432,0.459539054929 0.222984461349,0.685931529237 0.0180798211904,0.829827540014'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(26, 27))}-color)' stroke='#000000' points='0.266593210281,0.435462585597 0.462621894766,0.306604547658 0.447625016912,0.529020062126 0.258471007198,0.661855059905'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(25, 26))}-color)' stroke='#000000' points='0.495373153236,0.284381590748 0.676360136685,0.165411106194 0.655528520228,0.383794964844 0.480376275383,0.506797105216'/>
+
+
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(17, 18))}-color)' stroke='#000000' points='-0.730336618018,-0.406648000697 -0.536451194753,-0.298971638163 -0.518934377726,-0.0391834403149 -0.706152138828,-0.153115112555'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(18, 19))}-color)' stroke='#000000' points='-0.501394876389,-0.27854802284 -0.290008318942,-0.161152216538 -0.280458541166,0.105031452812 -0.483878059362,-0.0187598249911'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(19, 20))}-color)' stroke='#000000' points='-0.251784251975,-0.138883000883 -0.0204149393493,-0.0103895558063 -0.0204149393493,0.262289306255 -0.242234474199,0.127300668467'/>
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(16, 17))}-color)' stroke='#000000' points='-0.702590256077,-0.109566819661 -0.515372494975,0.0043648525786 -0.499188969657,0.244379283896 -0.680175953105,0.125408799342'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(11, 12))}-color)' stroke='#000000' points='-0.481556632129,0.025787474065 -0.278137113933,0.149578751868 -0.269344422326,0.394659943322 -0.465373106811,0.265801905383'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(12, 13))}-color)' stroke='#000000' points='-0.241391846748,0.172857245909 -0.0195723118985,0.307845883697 -0.0195723118985,0.557970092018 -0.23259915514,0.417938437362'/>
+
+          <polygon fill='var(--rubik-${numberToColor(string.substring(15, 16))}-color)' stroke='#000000' points='-0.676874966562,0.165766840531 -0.495887983113,0.284737325085 -0.480891105259,0.507152839553 -0.656043350105,0.384150699181'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(14, 15))}-color)' stroke='#000000' points='-0.463228483716,0.306955455879 -0.267199799232,0.435813493818 -0.259077596148,0.662205968126 -0.448231605863,0.529370970347'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(13, 14))}-color)' stroke='#000000' points='-0.23182332941,0.459880027528 -0.0187964861684,0.599911682184 -0.0187964861684,0.830168512613 -0.223701126327,0.686272501836'/>
+        </g>
+      </svg>
+    `;
+
+    stringImageTo2DImage = (string) => `
+      <svg viewBox='-0.9 -0.9 1.8 1.8' class="rubik2d">
+        <rect fill='var(--rubik-background-color)' x='-0.9' y='-0.9' width='1.8' height='1.8'/>
+        <g style='stroke-width:0.1;stroke-linejoin:round;opacity:1'>
+          <polygon fill='var(--white)' stroke='#000000' points='-0.52222222222222,-0.52222222222222 0.52222222222222,-0.52222222222222 0.52222222222222,0.52222222222222 -0.52222222222222,0.52222222222222'/>
+        </g>
+        <g style='opacity:1;stroke-opacity:0.5;stroke-width:0;stroke-linejoin:round'>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(5, 6))}-color)' stroke='#000000' points='-0.52777777777778,-0.52777777777778 -0.21296296296296,-0.52777777777778 -0.21296296296296,-0.21296296296296 -0.52777777777778,-0.21296296296296'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(6, 7))}-color)' stroke='#000000' points='-0.15740740740741,-0.52777777777778 0.15740740740741,-0.52777777777778 0.15740740740741,-0.21296296296296 -0.15740740740741,-0.21296296296296'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(7, 8))}-color)' stroke='#000000' points='0.21296296296296,-0.52777777777778 0.52777777777778,-0.52777777777778 0.52777777777778,-0.21296296296296 0.21296296296296,-0.21296296296296'/>
+        
+          <polygon fill='var(--rubik-${numberToColor(string.substring(4, 5))}-color)' stroke='#000000' points='-0.52777777777778,-0.15740740740741 -0.21296296296296,-0.15740740740741 -0.21296296296296,0.15740740740741 -0.52777777777778,0.15740740740741'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(1, 2))}-color)' stroke='#000000' points='-0.15740740740741,-0.15740740740741 0.15740740740741,-0.15740740740741 0.15740740740741,0.15740740740741 -0.15740740740741,0.15740740740741'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(8, 9))}-color)' stroke='#000000' points='0.21296296296296,-0.15740740740741 0.52777777777778,-0.15740740740741 0.52777777777778,0.15740740740741 0.21296296296296,0.15740740740741'/>
+        
+          <polygon fill='var(--rubik-${numberToColor(string.substring(3, 4))}-color)' stroke='#000000' points='-0.52777777777778,0.21296296296296 -0.21296296296296,0.21296296296296 -0.21296296296296,0.52777777777778 -0.52777777777778,0.52777777777778'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(2, 3))}-color)' stroke='#000000' points='-0.15740740740741,0.21296296296296 0.15740740740741,0.21296296296296 0.15740740740741,0.52777777777778 -0.15740740740741,0.52777777777778'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(9, 10))}-color)' stroke='#000000' points='0.21296296296296,0.21296296296296 0.52777777777778,0.21296296296296 0.52777777777778,0.52777777777778 0.21296296296296,0.52777777777778'/>
+        </g>
+        <g style='opacity:1;stroke-opacity:1;stroke-width:0.02;stroke-linejoin:round'>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(17, 18))}-color)' stroke='#000000' points='-0.54406130268199,0.5544061302682 -0.19591315453384,0.5544061302682 -0.18390804597701,0.7183908045977 -0.50804597701149,0.7183908045977'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(18, 19))}-color)' stroke='#000000' points='-0.17445721583653,0.5544061302682 0.17369093231162,0.5544061302682 0.16168582375479,0.7183908045977 -0.16245210727969,0.7183908045977'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(19, 20))}-color)' stroke='#000000' points='0.19514687100894,0.5544061302682 0.54329501915709,0.5544061302682 0.50727969348659,0.7183908045977 0.18314176245211,0.7183908045977'/>
+        
+          <polygon fill='var(--rubik-${numberToColor(string.substring(23, 24))}-color)' stroke='#000000' points='0.5544061302682,-0.19514687100894 0.5544061302682,-0.54329501915709 0.7183908045977,-0.50727969348659 0.7183908045977,-0.18314176245211'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(22, 23))}-color)' stroke='#000000' points='0.5544061302682,0.17445721583653 0.5544061302682,-0.17369093231162 0.7183908045977,-0.16168582375479 0.7183908045977,0.16245210727969'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(29, 30))}-color)' stroke='#000000' points='0.5544061302682,0.54406130268199 0.5544061302682,0.19591315453384 0.7183908045977,0.18390804597701 0.7183908045977,0.50804597701149'/>
+        
+          <polygon fill='var(--rubik-${numberToColor(string.substring(47, 48))}-color)' stroke='#000000' points='-0.19514687100894,-0.5544061302682 -0.54329501915709,-0.5544061302682 -0.50727969348659,-0.7183908045977 -0.18314176245211,-0.7183908045977'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(46, 47))}-color)' stroke='#000000' points='0.17445721583653,-0.5544061302682 -0.17369093231162,-0.5544061302682 -0.16168582375479,-0.7183908045977 0.16245210727969,-0.7183908045977'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(45, 46))}-color)' stroke='#000000' points='0.54406130268199,-0.5544061302682 0.19591315453384,-0.5544061302682 0.18390804597701,-0.7183908045977 0.50804597701149,-0.7183908045977'/>
+        
+          <polygon fill='var(--rubik-${numberToColor(string.substring(53, 54))}-color)' stroke='#000000' points='-0.5544061302682,-0.54406130268199 -0.5544061302682,-0.19591315453384 -0.7183908045977,-0.18390804597701 -0.7183908045977,-0.50804597701149'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(54, 55))}-color)' stroke='#000000' points='-0.5544061302682,-0.17445721583653 -0.5544061302682,0.17369093231162 -0.7183908045977,0.16168582375479 -0.7183908045977,-0.16245210727969'/>
+          <polygon fill='var(--rubik-${numberToColor(string.substring(55, 56))}-color)' stroke='#000000' points='-0.5544061302682,0.19514687100894 -0.5544061302682,0.54329501915709 -0.7183908045977,0.50727969348659 -0.7183908045977,0.18314176245211'/>
+        </g>
+      </svg>
+    `;
+
+    async function paste(input) {
+      const text = await navigator.clipboard.readText();
+      input.value = text;
+    }
+
+    randomInt = (start, stop) => Math.round(Math.random() * (stop - start) + start);
+
+    generateScramble = (length) => {
+      let move = ["U", "D", "F", "B", "R", "L", "M", "E", "S"];
+      let rotate = ["x", "y", "z"];
+      let turnCount = ["", "'", "2"];
+
+      let result = [];
+
+      for (let i = 0; i < length; i++) {
+        result.push( move[randomInt(0, move.length - 1)] + turnCount[randomInt(0, turnCount.length - 1)] );
+      }
+
+      return result.join(" ");
+    }
+
+    addNewMove = () => {
+      let moves = [
+        ["U", "D", "F", "B", "R", "L", "M", "E", "S"],
+        ["U'", "D'", "F'", "B'", "R'", "L'", "M'", "E'", "S'"],
+        ["U2", "D2", "F2", "B2", "R2", "L2", "M2", "E2", "S2"],
+        ["u", "d", "f", "b", "r", "l", "x", "y", "z"],
+        ["u'", "d'", "f'", "b'", "r'", "l'", "x'", "y'", "z'"],
+        ["u2", "d2", "f2", "b2", "r2", "l2", "x2", "y2", "z2"],
+      ];
+
+      for (let i = 0; i < moves.length; i++) {
+        let btnGroup = document.createElement("div");
+        btnGroup.setAttribute("class", "btnGroup");
+        for (let j = 0; j < moves[i].length; j++) {
+          let btn = document.createElement("button");
+          btn.innerHTML = moves[i][j];
+          btnGroup.appendChild( btn );
+          btn.setAttribute("onclick", "move(this)");
+          btn.setAttribute("class", "movement");
+        }
+        document.querySelector(".inp0").appendChild( btnGroup );
+      }
+    }
+
+    move = (e) => {
+      updateCube(turn( document.querySelector(".image").value.replace(/(_|\|)/g, ""), e.innerHTML ));
+    }
+
+    updateCube = (move) => {
+      if (document.querySelector(".img").dataset.state == "3d")
+        func = stringImageTo3DImage;
+      else
+        func = stringImageTo2DImage;
+
+      document.querySelector(".img").removeChild( document.querySelector(".img svg") );
+      document.querySelector(".img").insertAdjacentHTML( 'beforeend', func( move.replace(/(_|\|)/g, "") ) );
+      document.querySelector(".image").value = move;
+    }
+  </script>
+
+  <style>
+    :root {
+      --rubik-white-color: rgb(255 255 255 / 0.5);
+      --rubik-yellow-color: rgb(255 255 0 / 0.5);
+      --rubik-red-color: rgb(255 0 0 / 0.5);
+      --rubik-orange-color: rgb(255 165 0 / 0.5);
+      --rubik-green-color: rgb(0 255 0 / 0.5);
+      --rubik-blue-color: rgb(0 0 255 / 0.5);
+      --rubik-gray-color: rgb(20 20 20 / 0.5);
+
+      --rubik-white-color: rgb(255 255 255 / 1);
+      --rubik-yellow-color: rgb(255 255 0 / 1);
+      --rubik-red-color: rgb(255 0 0 / 1);
+      --rubik-orange-color: rgb(255 165 0 / 1);
+      --rubik-green-color: rgb(0 255 0 / 1);
+      --rubik-blue-color: rgb(0 0 255 / 1);
+      --rubik-gray-color: rgb(20 20 20 / 1);
+
+      --text-selection-color: rgb(0 0 0 / 1);
+      --text-selection-background-color: rgb(255 255 255 / 1);
+      --text-color: rgb(255 255 255 / 1);
+
+      --header-background-color: rgb(4 0 33 / 1);
+      --footer-background-color: rgb(4 0 33 / 1);
+
+      --background-color: rgb(20 20 33 / 1);
+      --primary-color: rgb(20 200 20 / 1);
+      --secondary-color: rgb(98, 0, 163);
+      
+      --index-background-color: rgb(4 0 33 / 1);
+      --button-group-background-color: rgb(4 0 33 / 1);
+      --rubik-background-color: rgb(4 0 33 / 1);
+      --algorithm-background-color: rgb(4 0 33 / 1);
+      --load-more-background-color: rgb(48 48 48 / 0.5);
+
+      --button-state-notlearn: rgba(0 0 0 / 0.5);
+      --button-state-learning: rgba(200 200 0 / 0.5);
+      --button-state-learned: rgba(0 200 0 / 0.5);
+
+      --scrollbar-track-color: rgb(18 18 18 / 0.5);
+      --scrollbar-thumb-color: rgb(90 90 90 / 0.5);
+      --scrollbar-thumb-border-color: rgb(255 255 255 / 0.5);
+    }
+
+    /* header */
+
+    header {
+      width: 100%;
+    }
+
+    header nav {
+      width: 100%;
+    }
+
+    header nav ul {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      list-style-type: none;
+      background-color: var(--header-background-color);
+    }
+
+    header nav ul li {
+      margin: 1rem 0 1rem 0;
+    }
+
+    header nav ul li:first-child {
+      margin-right: auto;
+    }
+
+    header nav ul li a {
+      padding: 1rem;
+      text-decoration: none;
+      font-size: 1.5rem;
+      background-color: var(--header-background-color);
+      transition: background-color 0.5s;
+    }
+
+    header nav ul li a:hover {
+      background-color: var(--primary-color);
+    }
+
+    @media (width <= 1550px) {
+      header nav ul li a {
+        font-size: 0.75rem;
+      }
+    }
+
+  /* header end */
+
+    body {
+      overflow-x: hidden;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: monospace;
+      box-sizing: border-box;
+      font-size: 3vh;
+    }
+
+    ::-webkit-scrollbar {
+      width: 1rem;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: rgb(18 18 18 / 0.5);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(90 90 90 / 0.5);
+      border-radius: 0.5rem;
+      border: 0.125rem solid rgb(255 255 255 / 0.5);
+    }
+
+    main {
+      background-color: var(--background-color);
+    }
+
+    svg {
+      width: 50vh;
+      height: 50vh;
+      background-color: var(--background-color);
+    }
+
+    svg g {
+      opacity: 1;
+      stroke-width: 0;
+      stroke-opacity: 0.5;
+      stroke-linejoin: round;
+    }
+
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin: 1vw;
+    }
+
+    main .input {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-right: auto;
+      margin-left: 1vw;
+    }
+
+    main .input .inp1, 
+    main .input .inp2 {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 1vw;
+    }
+
+    main .input .inp0 {
+      width: 100%;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }
+
+    main .input .inp1 .inp1BtnGrp, 
+    main .input .inp2 .inp2BtnGrp {
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+      margin: 0 auto;
+    }
+
+    input {
+      margin-right: auto;
+      box-sizing: border-box;
+      padding: 1vw;
+      width: 100%;
+      border: 0.5vw solid rgb(48 48 48);
+      background: rgb(0 0 0);
+    }
+
+    button, select {
+      user-select: none;
+      display: inline-block;
+      padding: 1vw;
+      margin: 1vw 0vw 1vw 0vw;
+      border-radius: 1vw;
+      border: 0.5vw solid rgb(100 100 100);
+      background-color: var(--background-color);
+    }
+    .move {
+      border: 0.5vw solid rgb(0 100 0);
+      background: rgb(0 50 0);
+    }
+    .reset {
+      border: 0.5vw solid rgb(100 0 0);
+      background: rgb(50 0 0);
+    }
+    .reverse {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .inverse {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .mirror {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .rotate  {
+      border: 0.5vw solid rgb(100 100 100);
+      background: rgb(18 18 18);
+    }
+    .btnGroup {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1vw;
+    }
+
+    .btnGroup button {
+      user-select: none;
+      flex-grow: 1;
+      background-color: var(--header-background-color);
+      padding: 0.25vw;
+      margin: 0;
+    }
+
+    @media (orientation: portrait) {
+      svg {
+        width: 50vw;
+        height: 50vw;
+      }
+    }
+
+    @media (width <= 1050px) {
+      main {
+        flex-direction: column;
+      }
+    }
+    @media (width <= 520px) {
+      main .input .inp1, main .input .inp2 {
+        flex-direction: column;
+      }
+      main .input .inp1 .inp1BtnGrp button {
+        flex-grow: 1;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <?php include 'DynamicPage/header.php' ?>
+
+  <main>
+    <div class="img" data-state="3d">
+
+    </div>
+    <div class="input">
+      <div class="inp0">
+      </div>
+      <div class="inp1">
+        <input class="algorithm" type="text" pattern="(U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2)( (U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2))*">
+        <div class="inp1BtnGrp">
+          <button class="move">Move!</button>
+          <button class="reset">Reset</button>
+          <button class="reverse">Reverse Algoritihm</button>
+          <button class="inverse">Inverse Algorithm</button>
+          <button class="mirror">Mirror Algorithm</button>
+          <button class="rotate">Rotate Algorithm</button>
+        </div>
+      </div>
+      <div class="inp2">
+        <input class="image" type="text" size=31.5>
+        <div class="inp2BtnGrp">
+          <button class="load">Load Rubik Cube</button>
+          <button class="copy">Copy Rubik Cube</button>
+          <select name="rubikType" id="">
+            <option value="crossCube">Cross Cube</option>
+            <option value="f2lCube">F2L Cube</option>
+            <option value="ollCube">OLL Cube</option>
+            <option value="solvedCube">Solved Cube</option>
+            <option value="randomCube">Random Cube</option>
+          </select>
+          <select name="direction" id="">
+            <option value="x">X</option>
+            <option value="y">Y</option>
+            <option value="z">Z </option>
+          </select>
+          <button class="lmao">Lmao</button>
+          <button class="toggleState">3D Rubik's Cube</button>
+        </div>
+      </div>
+      <div class="step"></div>
+    </div>  
+  </main>
+
+  <?php include "DynamicPage/footer.php" ?>
+
+  <script>
+    // let cubeImage = '444444444555555555333333333111111111222222222666666666';
+    let cubeImage = '011111111102222222220333333333044444444405555555550666666666';
+
+    document.querySelector(".algorithm").value = "R U R' U R U' R' U' R' F R F'";
+    document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
+    document.querySelector(".image").value = cubeImage;
+
+    document.querySelector(".move").addEventListener("click", () => 
+      updateCube( turn( document.querySelector(".image").value.replace(/(_|\|)/g, ""), document.querySelector(".algorithm").value ) )
+    );
+
+    document.querySelector(".reset").addEventListener("click", () => 
+      updateCube('011111111102222222220333333333044444444405555555550666666666')
+    );
+
+    document.querySelector(".reverse").addEventListener("click", () => {
+      document.querySelector(".algorithm").value = 
+        document.querySelector(".algorithm").value.split(" ").reverse().join(" ");
+    });
+
+    document.querySelector(".inverse").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      arr.forEach(elem => {
+        if (elem.match(/^\w$/)) result.push(elem + "'");
+        else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+        else result.push(elem);
+      });
+
+      algorithm.value = result.join(" ");
+    });
+
+    document.querySelector(".mirror").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      switch (document.querySelector("select[name=direction]").value) {
+        case "x":
+          arr.forEach(elem => {
+            if (elem.match(/^R$/)) result.push(elem.replace("R", "L'"));
+            else if (elem.match(/^L$/)) result.push(elem.replace("L", "R'"));
+            else if (elem.match(/^R'$/)) result.push(elem.replace("R'", "L"));
+            else if (elem.match(/^L'$/)) result.push(elem.replace("L'", "R"));
+            else if (elem.match(/^r$/)) result.push(elem.replace("r", "l'"));
+            else if (elem.match(/^l$/)) result.push(elem.replace("l", "r'"));
+            else if (elem.match(/^r'$/)) result.push(elem.replace("r'", "l"));
+            else if (elem.match(/^l'$/)) result.push(elem.replace("l'", "r"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+        case "y":
+          arr.forEach(elem => {
+            if (elem.match(/^U$/)) result.push(elem.replace("U", "D'"));
+            else if (elem.match(/^D$/)) result.push(elem.replace("D", "U'"));
+            else if (elem.match(/^U'$/)) result.push(elem.replace("U'", "D"));
+            else if (elem.match(/^D'$/)) result.push(elem.replace("D'", "U"));
+            else if (elem.match(/^u$/)) result.push(elem.replace("u", "d'"));
+            else if (elem.match(/^d$/)) result.push(elem.replace("d", "u'"));
+            else if (elem.match(/^u'$/)) result.push(elem.replace("u'", "d"));
+            else if (elem.match(/^d'$/)) result.push(elem.replace("d'", "u"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+        case "z":
+          arr.forEach(elem => {
+            if (elem.match(/^F$/)) result.push(elem.replace("F", "B'"));
+            else if (elem.match(/^B$/)) result.push(elem.replace("B", "F'"));
+            else if (elem.match(/^F'$/)) result.push(elem.replace("F'", "B"));
+            else if (elem.match(/^B'$/)) result.push(elem.replace("B'", "F"));
+            else if (elem.match(/^f$/)) result.push(elem.replace("f", "b'"));
+            else if (elem.match(/^b$/)) result.push(elem.replace("b", "f'"));
+            else if (elem.match(/^f'$/)) result.push(elem.replace("f'", "b"));
+            else if (elem.match(/^b'$/)) result.push(elem.replace("b'", "f"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+      }
+
+      algorithm.value = result.join(" ");
+    });
+
+    document.querySelector(".rotate").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      switch (document.querySelector("select[name=direction]").value) {
+        case "x":
+          arr.forEach(elem => {
+            if (elem.match(/^R['2]?$/)) result.push(elem.replace("R", "L"));
+            else if (elem.match(/^L['2]?$/)) result.push(elem.replace("L", "R"));
+            else if (elem.match(/^r['2]?$/)) result.push(elem.replace("r", "l"));
+            else if (elem.match(/^l['2]?$/)) result.push(elem.replace("l", "r"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+        case "y":
+          arr.forEach(elem => {
+            if (elem.match(/^U['2]?$/)) result.push(elem.replace("U", "D"));
+            else if (elem.match(/^D['2]?$/)) result.push(elem.replace("D", "U"));
+            else if (elem.match(/^u['2]?$/)) result.push(elem.replace("u", "d"));
+            else if (elem.match(/^d['2]?$/)) result.push(elem.replace("d", "u"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+        case "z":
+          arr.forEach(elem => {
+            if (elem.match(/^F['2]?$/)) result.push(elem.replace("F", "B"));
+            else if (elem.match(/^B['2]?$/)) result.push(elem.replace("B", "F"));
+            else if (elem.match(/^f['2]?$/)) result.push(elem.replace("f", "b"));
+            else if (elem.match(/^b['2]?$/)) result.push(elem.replace("b", "f"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+      }
+
+      algorithm.value = result.join(" ");
+    });
+    
+    document.querySelector(".load").addEventListener("click", () => 
+      updateCube(document.querySelector(".image").value)
+    );
+
+    document.querySelector(".copy").addEventListener("click", () => {
+      navigator.clipboard.writeText(document.querySelector(".image").value);
+    });
+
+    document.querySelector("select[name=rubikType]").addEventListener("change", (e) => {
+      let cubeImage = '400000000500555550330003333111111111200222220666666000';
+
+      switch (document.querySelector("select").value) {
+        case "crossCube": 
+          document.querySelector(".image").value = "400000000500005000300000030110101010200002000600600000";
+          break;
+        case "f2lCube": 
+          document.querySelector(".image").value = "400000000500555550330003333111111111200222220666666000";
+          break;
+        case "ollCube": 
+          document.querySelector(".image").value = "444444444500555550330003333111111111200222220666666000";
+          break;
+        case "solvedCube": 
+          // document.querySelector(".image").value = "444444444555555555333333333111111111222222222666666666";
+          document.querySelector(".image").value = "111111111222222222333333333444444444555555555666666666";
+          break;
+        case "randomCube": 
+          document.querySelector(".image").value = turn( "444444444555555555333333333111111111222222222666666666", generateScramble(20) );
+          break;
+      }
+    });
+
+    document.querySelector(".lmao").addEventListener("click", () => {
+      // paste(document.querySelector(".algorithm"));
+      document.querySelector(".inverse").click();
+      document.querySelector(".reverse").click();
+      document.querySelector(".reset").click();
+      document.querySelector(".move").click();
+      document.querySelector(".copy").click();
+    });
+
+    document.querySelector(".toggleState").addEventListener("click", () => {
+      if (document.querySelector(".img").dataset.state == "3d") {
+        document.querySelector(".img").dataset.state = "2d";
+        document.querySelector(".toggleState").innerText = "2D Rubik's Cube";
+      }
+      else {
+        document.querySelector(".img").dataset.state = "3d";
+        document.querySelector(".toggleState").innerText = "3D Rubik's Cube";
+      }
+
+      updateCube(document.querySelector(".image").value);
+    });
+
+    // document.addEventListener('keydown', (e) => {
+    //   switch (e.key) {
+    //     case "Enter":
+    //       document.querySelector(".move").click();
+    //       break;
+    //     case "r":
+    //       document.querySelector(".reset").click();
+    //       break;
+    //     case "a":
+    //       document.querySelector(".algorithm").focus();
+    //       break;
+    //     case "i":
+    //       document.querySelector(".image").focus();
+    //       break;
+    //   } 
+    // });
+
+    addNewMove();
+  </script>
+</body>
+</html>
