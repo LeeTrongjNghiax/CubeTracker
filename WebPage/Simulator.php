@@ -278,7 +278,8 @@
   <?php include "DynamicPage/footer.php" ?>
 
   <script>
-    let cubeImage = '444444444555555555333333333111111111222222222666666666';
+    // let cubeImage = '444444444555555555333333333111111111222222222666666666';
+    let cubeImage = '111111111222222222333333333444444444555555555666666666';
 
     document.querySelector(".algorithm").value = "R U R' U R U' R' U' R' F R F'";
     document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( cubeImage.replace(/(_|\|)/g, "") ) );
@@ -289,7 +290,8 @@
     );
 
     document.querySelector(".reset").addEventListener("click", () => 
-      updateCube('444444444555555555333333333111111111222222222666666666')
+      // updateCube('444444444555555555333333333111111111222222222666666666');
+      updateCube('111111111222222222333333333444444444555555555666666666')
     );
 
     document.querySelector(".reverse").addEventListener("click", () => {
@@ -436,7 +438,8 @@
           document.querySelector(".image").value = "444444444500555550330003333111111111200222220666666000";
           break;
         case "solvedCube": 
-          document.querySelector(".image").value = "444444444555555555333333333111111111222222222666666666";
+          // document.querySelector(".image").value = "444444444555555555333333333111111111222222222666666666";
+          document.querySelector(".image").value = "111111111222222222333333333444444444555555555666666666";
           break;
         case "randomCube": 
           document.querySelector(".image").value = turn( "444444444555555555333333333111111111222222222666666666", generateScramble(20) );

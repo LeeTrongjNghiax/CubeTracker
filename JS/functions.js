@@ -35,7 +35,9 @@ multipleSeriesSwap = (string, positions) => {
 
 seriesSwap = (string, positions) => {
   let arr = string.split("");
+  console.log("arr + " + arr);
   let temp = arr[ positions[0] ];
+  console.log("temp + " + temp);
 
   for (let i = 0; i < positions.length - 1; i++)
     arr[ positions[i] ] = arr[ positions[i + 1] ];
@@ -54,17 +56,6 @@ turn = (string, directions) => {
 
   return string;
 }
-
-/*
-
-
-
-━
-
-
-
-
-*/
 
 turnOne = (string, direction) => {
   const U_move = [
